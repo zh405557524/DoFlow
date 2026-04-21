@@ -2,42 +2,45 @@ import 'package:doflow/pages/plan/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Renders the summary scope tabs and the metrics cards under the hero.
+/// Renders the summary scope tabs and progress card under the hero.
 class PlanSummaryTabs extends StatelessWidget {
   const PlanSummaryTabs({
     super.key,
     required this.selectedScope,
-    required this.headline,
-    required this.metrics,
+    required this.summaryTitle,
+    required this.summaryValue,
+    required this.summaryCaption,
+    required this.summaryProgress,
     required this.onScopeChanged,
   });
 
   final PlanSummaryScope selectedScope;
-  final String headline;
-  final List<PlanSummaryMetric> metrics;
+  final String summaryTitle;
+  final String summaryValue;
+  final String summaryCaption;
+  final double summaryProgress;
   final ValueChanged<PlanSummaryScope> onScopeChanged;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.all(4.w),
           decoration: BoxDecoration(
             color: const Color(0xFFF1F5F9),
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(20.r),
           ),
           child: Row(
             children: [
               _ScopeButton(
-                label: '今日',
+                label: '今日 Today',
                 isSelected: selectedScope == PlanSummaryScope.today,
                 onTap: () => onScopeChanged(PlanSummaryScope.today),
               ),
               SizedBox(width: 8.w),
               _ScopeButton(
-                label: '本周',
+                label: '本周 Week',
                 isSelected: selectedScope == PlanSummaryScope.week,
                 onTap: () => onScopeChanged(PlanSummaryScope.week),
               ),
@@ -45,61 +48,61 @@ class PlanSummaryTabs extends StatelessWidget {
           ),
         ),
         SizedBox(height: 16.h),
-        Text(
-          headline,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w700,
+        Container(
+          padding: EdgeInsets.all(18.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(26.r),
+            boxShadow: const <BoxShadow>[
+              BoxShadow(
+                color: Color(0x0D1E1B4B),
+                blurRadius: 18,
+                offset: Offset(0, 10),
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: 14.h),
-        Row(
-          children: List<Widget>.generate(metrics.length, (int index) {
-            final PlanSummaryMetric metric = metrics[index];
-            return Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(right: index == metrics.length - 1 ? 0 : 10.w),
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(22.r),
-                    boxShadow: const <BoxShadow>[
-                      BoxShadow(
-                        color: Color(0x0D1E1B4B),
-                        blurRadius: 18,
-                        offset: Offset(0, 10),
-                      ),
-                    ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    summaryTitle,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: const Color(0xFF64748B),
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        metric.label,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF64748B),
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        metric.value,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(height: 6.h),
-                      Text(
-                        metric.caption,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFF94A3B8),
-                        ),
-                      ),
-                    ],
+                  const Spacer(),
+                  Text(
+                    summaryValue,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: const Color(0xFF6366F1),
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12.h),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(999.r),
+                child: LinearProgressIndicator(
+                  value: summaryProgress.clamp(0.0, 1.0),
+                  minHeight: 10.h,
+                  backgroundColor: const Color(0xFFE7EBF4),
+                  valueColor: const AlwaysStoppedAnimation<Color>(
+                    Color(0xFF7C5CFF),
                   ),
                 ),
               ),
-            );
-          }),
+              SizedBox(height: 10.h),
+              Text(
+                summaryCaption,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF94A3B8),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -122,21 +125,21 @@ class _ScopeButton extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(16.r),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.symmetric(vertical: 14.h),
           decoration: BoxDecoration(
             color: isSelected ? Colors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(14.r),
+            borderRadius: BorderRadius.circular(16.r),
           ),
           child: Text(
             label,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: isSelected
                   ? const Color(0xFF1E1B4B)
-                  : const Color(0xFF64748B),
+                  : const Color(0xFF94A3B8),
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
             ),
           ),

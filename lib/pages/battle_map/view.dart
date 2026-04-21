@@ -18,16 +18,53 @@ class BattleMapPage extends StatelessWidget {
       init: BattleMapController(),
       global: false,
       builder: (BattleMapController controller) {
+        final DateTime now = DateTime.now();
+        final DateTime startOfYear = DateTime(now.year, 1, 1);
+        final int dayOfYear = now.difference(startOfYear).inDays + 1;
+
         return CustomScaffold(
-          appBar: AppBar(title: const Text('BattleMap')),
           body: SafeArea(
+            bottom: false,
             child: controller.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : ListView(
-                    padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 24.h),
+                    padding: EdgeInsets.fromLTRB(20.w, 14.h, 20.w, 28.h),
                     children: [
+                      Row(
+                        children: [
+                          _BackButton(
+                            onTap: () => Navigator.of(context).pop(),
+                          ),
+                          SizedBox(width: 14.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '年度作战地图',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium
+                                      ?.copyWith(fontWeight: FontWeight.w800),
+                                ),
+                                SizedBox(height: 6.h),
+                                Text(
+                                  '${now.year} · 第 $dayOfYear 天 / 365',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                        color: const Color(0xFF94A3B8),
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
                       OverviewBanner(plans: controller.plans),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: 18.h),
                       ...controller.plans.map(
                         (plan) => Padding(
                           padding: EdgeInsets.only(bottom: 14.h),
@@ -47,6 +84,33 @@ class BattleMapPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _BackButton extends StatelessWidget {
+  const _BackButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 48.w,
+        height: 48.w,
+        decoration: BoxDecoration(
+          color: const Color(0xFFEDE9FE),
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        alignment: Alignment.center,
+        child: const Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: Color(0xFF6366F1),
+          size: 18,
+        ),
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Renders the AI suggestion card at the top of the Now page.
+/// Renders the small AI suggestion label above the main recommendation.
 class AiSuggestionCard extends StatelessWidget {
   const AiSuggestionCard({super.key, required this.suggestion});
 
@@ -9,21 +9,25 @@ class AiSuggestionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(18.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'AI suggestion',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(height: 10.h),
-            Text(suggestion, style: Theme.of(context).textTheme.bodyLarge),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '🤖 AI 建议你现在做：',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: const Color(0xFF94A3B8),
+            fontWeight: FontWeight.w600,
+          ),
         ),
-      ),
+        SizedBox(height: 8.h),
+        Text(
+          suggestion,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: const Color(0xFF94A3B8),
+            height: 1.5,
+          ),
+        ),
+      ],
     );
   }
 }

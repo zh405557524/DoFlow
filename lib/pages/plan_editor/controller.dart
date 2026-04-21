@@ -121,7 +121,7 @@ class PlanEditorController extends GetxController {
       ...phases,
       PlanPhaseModel(
         id: _uuid.v4(),
-        title: 'Phase ${phases.length + 1}',
+        title: '阶段 ${phases.length + 1}',
         goal: '',
         startAt: startAt,
         endAt: endAt,
@@ -200,13 +200,13 @@ class PlanEditorController extends GetxController {
     fieldErrors.clear();
 
     if (titleController.text.trim().isEmpty) {
-      fieldErrors['title'] = 'Plan title is required.';
+      fieldErrors['title'] = '请先填写计划标题。';
     }
     if (phases.isEmpty) {
-      fieldErrors['phases'] = 'At least one phase is required.';
+      fieldErrors['phases'] = '至少需要一个阶段。';
     }
     if (phases.any((PlanPhaseModel phase) => phase.tasks.isEmpty)) {
-      fieldErrors['tasks'] = 'Each phase needs at least one task.';
+      fieldErrors['tasks'] = '每个阶段至少需要一个任务。';
     }
 
     update();

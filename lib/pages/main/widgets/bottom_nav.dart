@@ -1,3 +1,4 @@
+import 'package:doflow/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,26 +15,23 @@ class MainBottomNav extends StatelessWidget {
 
   static const List<_MainNavItem> _items = <_MainNavItem>[
     _MainNavItem(label: 'Now', icon: Icons.bolt_rounded),
-    _MainNavItem(label: 'Chat', icon: Icons.forum_rounded),
-    _MainNavItem(label: 'Plan', icon: Icons.flag_rounded),
-    _MainNavItem(label: 'Profile', icon: Icons.person_rounded),
+    _MainNavItem(label: 'Chat', icon: Icons.chat_bubble_outline_rounded),
+    _MainNavItem(label: 'Plan', icon: Icons.calendar_today_rounded),
+    _MainNavItem(label: 'Profile', icon: Icons.person_outline_rounded),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 16.h),
+      padding: EdgeInsets.fromLTRB(18.w, 10.h, 18.w, 18.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28.r)),
-        border: const Border(
-          top: BorderSide(color: Color(0xFFEDE9FE)),
-        ),
+        border: const Border(top: BorderSide(color: Color(0xFFF1F5F9))),
         boxShadow: const <BoxShadow>[
           BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 20,
-            offset: Offset(0, -6),
+            color: Color(0x12000000),
+            blurRadius: 18,
+            offset: Offset(0, -8),
           ),
         ],
       ),
@@ -45,34 +43,28 @@ class MainBottomNav extends StatelessWidget {
           return Expanded(
             child: InkWell(
               onTap: () => onTap(index),
-              borderRadius: BorderRadius.circular(20.r),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 180),
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                decoration: BoxDecoration(
-                  color: isActive
-                      ? const Color(0xFFEDE9FE)
-                      : Colors.transparent,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
+              borderRadius: BorderRadius.circular(18.r),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
                       item.icon,
                       color: isActive
-                          ? const Color(0xFF6366F1)
+                          ? CustomTheme.primary
                           : const Color(0xFF9CA3AF),
+                      size: 25.w,
                     ),
                     SizedBox(height: 4.h),
                     Text(
                       item.label,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: isActive
-                            ? const Color(0xFF6366F1)
+                            ? CustomTheme.primary
                             : const Color(0xFF9CA3AF),
                         fontWeight: isActive
-                            ? FontWeight.w600
+                            ? FontWeight.w700
                             : FontWeight.w500,
                       ),
                     ),

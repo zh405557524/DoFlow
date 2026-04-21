@@ -4,7 +4,7 @@ import 'package:doflow/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Renders a single plan summary card in the Plan page list.
+/// Renders a simplified row card in the Plan page list.
 class PlanCard extends StatelessWidget {
   const PlanCard({super.key, required this.plan, required this.onTap});
 
@@ -23,131 +23,98 @@ class PlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color accent = CustomTheme.planColor(plan.colorHex);
+    final bool isActive = _timeProgress > 0.05 && _timeProgress < 1;
+
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(24.r),
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(18.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 42.w,
-                    height: 42.w,
-                    decoration: BoxDecoration(
-                      color: CustomTheme.planColor(
-                        plan.colorHex,
-                      ).withValues(alpha: 0.14),
-                      borderRadius: BorderRadius.circular(14.r),
-                    ),
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.flag_rounded,
-                      color: CustomTheme.planColor(plan.colorHex),
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          plan.title,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          plan.planType,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: CustomTheme.planColor(plan.colorHex),
-                                fontWeight: FontWeight.w600,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.chevron_right_rounded),
-                ],
+      borderRadius: BorderRadius.circular(26.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(26.r),
+          boxShadow: const <BoxShadow>[
+            BoxShadow(
+              color: Color(0x0D1E1B4B),
+              blurRadius: 16,
+              offset: Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 34.w,
+              height: 34.w,
+              decoration: BoxDecoration(
+                color: isActive ? const Color(0xFFEEF2FF) : Colors.transparent,
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: isActive
+                      ? const Color(0xFF6366F1)
+                      : const Color(0xFFD8E0EF),
+                ),
               ),
-              SizedBox(height: 10.h),
-              Text(
-                plan.summary,
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(height: 1.5),
+              alignment: Alignment.center,
+              child: isActive
+                  ? const Icon(
+                      Icons.check_rounded,
+                      size: 18,
+                      color: CustomTheme.primary,
+                    )
+                  : null,
+            ),
+            SizedBox(width: 14.w),
+            Container(
+              width: 36.w,
+              height: 36.w,
+              decoration: BoxDecoration(
+                color: accent.withValues(alpha: 0.14),
+                borderRadius: BorderRadius.circular(12.r),
               ),
-              SizedBox(height: 16.h),
-              Row(
+              alignment: Alignment.center,
+              child: Icon(Icons.layers_rounded, color: accent, size: 22.w),
+            ),
+            SizedBox(width: 14.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '时间进度',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF64748B),
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '${(_timeProgress * 100).round()}%',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: CustomTheme.planColor(plan.colorHex),
+                    plan.title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+                  SizedBox(height: 6.h),
+                  Text(
+                    '${labelForPlanType(plan.planType)} · ${formatDateRange(plan.startAt, plan.endAt)}',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: const Color(0xFF94A3B8),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
-              SizedBox(height: 8.h),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(999.r),
-                child: LinearProgressIndicator(
-                  value: _timeProgress,
-                  color: CustomTheme.planColor(plan.colorHex),
-                  minHeight: 8.h,
-                  backgroundColor: const Color(0xFFE5E7EB),
-                ),
+            ),
+            SizedBox(width: 10.w),
+            Text(
+              '${plan.taskCount}项',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: const Color(0xFFCBD5E1),
+                fontWeight: FontWeight.w600,
               ),
-              SizedBox(height: 14.h),
-              Text(
-                formatDateRange(plan.startAt, plan.endAt),
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 10.h),
-              Wrap(
-                spacing: 8.w,
-                runSpacing: 8.h,
-                children: [
-                  _MetaChip(label: '${plan.phaseCount} phases'),
-                  _MetaChip(label: '${plan.taskCount} tasks'),
-                  _MetaChip(label: '继续推进'),
-                ],
-              ),
-            ],
-          ),
+            ),
+            SizedBox(width: 2.w),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: Color(0xFFCBD5E1),
+            ),
+          ],
         ),
       ),
-    );
-  }
-}
-
-/// Renders a compact metadata chip for plan summaries.
-class _MetaChip extends StatelessWidget {
-  const _MetaChip({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3F4F6),
-        borderRadius: BorderRadius.circular(999.r),
-      ),
-      child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
     );
   }
 }

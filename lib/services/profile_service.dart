@@ -14,10 +14,12 @@ class ProfileService extends GetxService {
     if (_box.isEmpty) {
       final ProfileModel defaultProfile = ProfileModel(
         id: 'local_profile',
-        name: 'DoFlow User',
-        bio: 'Build a calm system for plans, notes, and execution.',
-        city: 'Shanghai',
-        tags: const <String>['focus', 'notes', 'execution'],
+        name: '执行者',
+        bio: '把注意力放回真正重要的主线。',
+        city: '上海',
+        avatar: '🙂',
+        avatarBg: '#6366F1',
+        tags: const <String>['执行力', '长期主义', '专注推进'],
         energyLevel: ProfileEnergyLevels.all.first,
         mode: ProfileModes.all.first,
       );

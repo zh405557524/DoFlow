@@ -54,9 +54,8 @@ class NowService extends GetxService {
     if (recommended == null) {
       return NowSnapshotModel(
         greeting: buildGreeting(now),
-        statusLabel: 'No active plan',
-        suggestionText:
-            'Create a plan or apply a draft to generate your next task.',
+        statusLabel: '暂无主线',
+        suggestionText: '先创建计划，或者从 Chat 应用一份草稿，系统才知道你下一步该做什么。',
         recommendedTask: null,
         backupTasks: backups,
       );
@@ -64,14 +63,14 @@ class NowService extends GetxService {
 
     final String statusLabel =
         recommended.status == TaskInstanceStatus.inProgress
-        ? 'In focus'
-        : 'Ready to start';
+        ? '专注中'
+        : '可立即开始';
 
     return NowSnapshotModel(
       greeting: buildGreeting(now),
       statusLabel: statusLabel,
       suggestionText:
-          'A small next step in "${recommended.planTitle}" will create the most momentum right now.',
+          '现在最值得推进的是「${recommended.planTitle}」里的这一小步，它最容易带来连续的执行感。',
       recommendedTask: recommended,
       backupTasks: backups,
     );

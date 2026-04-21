@@ -7,6 +7,31 @@ import 'package:get/get.dart';
 
 /// Owns the editable profile form.
 class UserProfileController extends GetxController {
+  static const List<String> avatarOptions = <String>[
+    '🙂',
+    '😎',
+    '🤖',
+    '🚀',
+    '🧠',
+    '🔥',
+    '🌟',
+    '🦊',
+    '🐼',
+    '🦁',
+    '🎯',
+    '💡',
+  ];
+
+  static const List<String> avatarBgOptions = <String>[
+    '#6366F1',
+    '#8B5CF6',
+    '#EC4899',
+    '#F59E0B',
+    '#10B981',
+    '#3B82F6',
+    '#EF4444',
+  ];
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
@@ -14,6 +39,8 @@ class UserProfileController extends GetxController {
 
   String selectedMode = ProfileModes.all.first;
   String selectedEnergyLevel = ProfileEnergyLevels.all.first;
+  String selectedAvatar = avatarOptions.first;
+  String selectedAvatarBg = avatarBgOptions.first;
   bool isSaving = false;
 
   @override
@@ -26,6 +53,8 @@ class UserProfileController extends GetxController {
     tagsController.text = profile.tags.join(', ');
     selectedMode = profile.mode;
     selectedEnergyLevel = profile.energyLevel;
+    selectedAvatar = profile.avatar;
+    selectedAvatarBg = profile.avatarBg;
   }
 
   @override
@@ -50,6 +79,8 @@ class UserProfileController extends GetxController {
       name: nameController.text.trim(),
       bio: bioController.text.trim(),
       city: cityController.text.trim(),
+      avatar: selectedAvatar,
+      avatarBg: selectedAvatarBg,
       tags: tagsController.text
           .split(',')
           .map((String item) => item.trim())

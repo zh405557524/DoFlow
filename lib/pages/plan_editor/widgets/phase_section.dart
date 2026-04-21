@@ -25,61 +25,94 @@ class PhaseSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(18.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    initialValue: phase.title,
-                    decoration: const InputDecoration(labelText: 'Phase title'),
-                    onChanged: (String value) {
-                      onChanged(phase.copyWith(title: value));
-                    },
+    return Container(
+      padding: EdgeInsets.all(20.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28.r),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 10.w,
+                height: 10.w,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFEC4899),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Text('阶段目标', style: Theme.of(context).textTheme.titleLarge),
+              const Spacer(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFDF2F8),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Text(
+                  '${phase.sortOrder + 3}'.padLeft(2, '0'),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: const Color(0xFFEC4899),
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                IconButton(
-                  onPressed: onDelete,
-                  icon: const Icon(Icons.delete_outline_rounded),
-                ),
-              ],
-            ),
-            SizedBox(height: 12.h),
-            TextFormField(
-              initialValue: phase.goal,
-              maxLines: 2,
-              decoration: const InputDecoration(labelText: 'Phase goal'),
-              onChanged: (String value) {
-                onChanged(phase.copyWith(goal: value));
-              },
-            ),
-            SizedBox(height: 12.h),
-            Text(
-              formatDateRange(phase.startAt, phase.endAt),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            SizedBox(height: 14.h),
-            Text('Tasks', style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(height: 10.h),
-            ...phase.tasks.map(
-              (PlanTaskModel task) => TaskItem(
-                task: task,
-                onEdit: () => onEditTask(task),
-                onDelete: () => onDeleteTask(task),
               ),
+            ],
+          ),
+          SizedBox(height: 18.h),
+          TextFormField(
+            initialValue: phase.title,
+            decoration: const InputDecoration(labelText: '阶段名称'),
+            onChanged: (String value) {
+              onChanged(phase.copyWith(title: value));
+            },
+          ),
+          SizedBox(height: 12.h),
+          TextFormField(
+            initialValue: phase.goal,
+            maxLines: 2,
+            decoration: const InputDecoration(labelText: '阶段目标'),
+            onChanged: (String value) {
+              onChanged(phase.copyWith(goal: value));
+            },
+          ),
+          SizedBox(height: 12.h),
+          Text(
+            formatDateRange(phase.startAt, phase.endAt),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: const Color(0xFF94A3B8),
             ),
-            SizedBox(height: 8.h),
-            OutlinedButton.icon(
-              onPressed: onAddTask,
-              icon: const Icon(Icons.add_rounded),
-              label: const Text('Add task'),
+          ),
+          SizedBox(height: 18.h),
+          ...phase.tasks.map(
+            (PlanTaskModel task) => TaskItem(
+              task: task,
+              onEdit: () => onEditTask(task),
+              onDelete: () => onDeleteTask(task),
             ),
-          ],
-        ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onAddTask,
+                  icon: const Icon(Icons.add_rounded),
+                  label: const Text('添加任务'),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              IconButton(
+                onPressed: onDelete,
+                icon: const Icon(Icons.delete_outline_rounded),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

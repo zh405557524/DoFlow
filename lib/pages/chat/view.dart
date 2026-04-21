@@ -24,6 +24,12 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _inputController = TextEditingController();
 
+  static const List<String> _quickReplies = <String>[
+    '我今天有点累 😴',
+    '状态很好，想冲一把 🔥',
+    '帮我安排今天',
+  ];
+
   @override
   void dispose() {
     _inputController.dispose();
@@ -37,87 +43,169 @@ class _ChatPageState extends State<ChatPage> {
       global: false,
       builder: (ChatController controller) {
         return CustomScaffold(
-          backgroundColor: CustomTheme.darkSurface,
-          appBar: AppBar(
-            title: const Text('Chat'),
-            foregroundColor: Colors.white,
-            backgroundColor: CustomTheme.darkSurface,
-          ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 12.h),
-                    children: controller.messages.isEmpty
-                        ? [
-                            Padding(
-                              padding: EdgeInsets.only(top: 80.h),
-                              child: Center(
-                                child: Text(
-                                  'Send an idea and I will turn it into a draft plan.',
-                                  style: Theme.of(context).textTheme.bodyLarge
-                                      ?.copyWith(color: Colors.white70),
-                                  textAlign: TextAlign.center,
+          backgroundColor: Colors.transparent,
+          body: Container(
+            decoration: const BoxDecoration(gradient: CustomTheme.chatBackground),
+            child: SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 10.h),
+                    child: Row(
+                      children: [
+                        _TopButton(
+                          icon: Icons.arrow_back_ios_new_rounded,
+                          onTap: () => context.pop(),
+                        ),
+                        SizedBox(width: 14.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'AI 执行助手',
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(color: Colors.white),
+                              ),
+                              SizedBox(height: 4.h),
+                              Text(
+                                'gpt-4o · 在线',
+                                style: Theme.of(context).textTheme.bodyLarge
+                                    ?.copyWith(
+                                      color: Colors.white.withValues(alpha: 0.65),
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        _TopButton(
+                          icon: Icons.auto_awesome_rounded,
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 12.h),
+                      children: controller.messages.isEmpty
+                          ? [
+                              Padding(
+                                padding: EdgeInsets.only(top: 80.h),
+                                child: Center(
+                                  child: Text(
+                                    '把想法说出来，我帮你整理成可执行计划。',
+                                    style: Theme.of(context).textTheme.bodyLarge
+                                        ?.copyWith(
+                                          color: Colors.white70,
+                                          height: 1.6,
+                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ]
-                        : controller.messages.expand((
-                            ChatMessageModel message,
-                          ) {
-                            final List<Widget> children = [
-                              MessageBubble(message: message),
-                            ];
+                            ]
+                          : controller.messages.expand((ChatMessageModel message) {
+                              final List<Widget> children = [
+                                MessageBubble(message: message),
+                              ];
 
-                            if (message.draftId != null) {
-                              final PlanDraftModel? draft =
-                                  Get.find<ChatService>().getDraftById(
-                                    message.draftId!,
-                                  );
-                              if (draft != null) {
-                                children.add(
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 12.h),
-                                    child: DraftCard(
-                                      draft: draft,
-                                      onApply: () {
-                                        context
-                                            .pushNamed(
-                                              RouteName.planEditorCreate,
-                                              extra: <String, dynamic>{
-                                                'draftId': draft.id,
-                                                'entry': 'chat',
-                                              },
-                                            )
-                                            .then(
-                                              (_) => controller.loadMessages(),
-                                            );
-                                      },
+                              if (message.draftId != null) {
+                                final PlanDraftModel? draft =
+                                    Get.find<ChatService>().getDraftById(
+                                      message.draftId!,
+                                    );
+                                if (draft != null) {
+                                  children.add(
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 12.h),
+                                      child: DraftCard(
+                                        draft: draft,
+                                        onApply: () {
+                                          context
+                                              .pushNamed(
+                                                RouteName.planEditorCreate,
+                                                extra: <String, dynamic>{
+                                                  'draftId': draft.id,
+                                                  'entry': 'chat',
+                                                },
+                                              )
+                                              .then((_) => controller.loadMessages());
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               }
-                            }
 
-                            return children;
-                          }).toList(),
+                              return children;
+                            }).toList(),
+                    ),
                   ),
-                ),
-                ChatInputBar(
-                  controller: _inputController,
-                  isSending: controller.isSending,
-                  onSend: () async {
-                    final String content = _inputController.text;
-                    _inputController.clear();
-                    await controller.sendMessage(content);
-                  },
-                ),
-              ],
+                  SizedBox(
+                    height: 46.h,
+                    child: ListView.separated(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, int index) {
+                        final String text = _quickReplies[index];
+                        return ActionChip(
+                          backgroundColor: Colors.white.withValues(alpha: 0.08),
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.12),
+                          ),
+                          label: Text(
+                            text,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () async {
+                            await controller.sendMessage(text);
+                          },
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          SizedBox(width: 10.w),
+                      itemCount: _quickReplies.length,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  ChatInputBar(
+                    controller: _inputController,
+                    isSending: controller.isSending,
+                    onSend: () async {
+                      final String content = _inputController.text;
+                      _inputController.clear();
+                      await controller.sendMessage(content);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class _TopButton extends StatelessWidget {
+  const _TopButton({required this.icon, required this.onTap});
+
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: IconButton(
+        onPressed: onTap,
+        icon: Icon(icon, color: Colors.white),
+      ),
     );
   }
 }

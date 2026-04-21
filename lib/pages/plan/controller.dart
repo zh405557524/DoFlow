@@ -58,47 +58,73 @@ class PlanController extends GetxController {
     }).length;
   }
 
-  String get summaryHeadline => switch (selectedSummaryScope) {
-    PlanSummaryScope.today => '今天先推进最值得投入的一条主线',
-    PlanSummaryScope.week => '这周把重点计划往前推一格',
-  };
+  String get summaryTitle => selectedSummaryScope == PlanSummaryScope.today
+      ? '今日进度'
+      : '本周推进';
 
-  List<PlanSummaryMetric> get summaryMetrics => switch (selectedSummaryScope) {
-    PlanSummaryScope.today => <PlanSummaryMetric>[
-      PlanSummaryMetric(
-        label: '进行中',
-        value: '$activePlanCount',
-        caption: '当前处于执行窗口',
-      ),
-      PlanSummaryMetric(
-        label: '总任务',
-        value: '$totalTaskCount',
-        caption: '本地计划任务数',
-      ),
-      PlanSummaryMetric(
-        label: '即将到期',
-        value: '$endingSoonPlanCount',
-        caption: '7 天内结束',
-      ),
-    ],
-    PlanSummaryScope.week => <PlanSummaryMetric>[
-      PlanSummaryMetric(
-        label: '计划数',
-        value: '${plans.length}',
-        caption: '已创建主线',
-      ),
-      PlanSummaryMetric(
-        label: '阶段数',
-        value: '$totalPhaseCount',
-        caption: '所有阶段总和',
-      ),
-      PlanSummaryMetric(
-        label: '任务数',
-        value: '$totalTaskCount',
-        caption: '可继续拆解执行',
-      ),
-    ],
-  };
+  String get summaryValue {
+    if (plans.isEmpty) {
+      return '0/0';
+    }
+    if (selectedSummaryScope == PlanSummaryScope.today) {
+      return '$activePlanCount/${plans.length}';
+    }
+    return '$totalPhaseCount/$totalTaskCount';
+  }
+
+  double get summaryProgress {
+    if (plans.isEmpty) {
+      return 0;
+    }
+    if (selectedSummaryScope == PlanSummaryScope.today) {
+      return activePlanCount / plans.length;
+    }
+    if (totalTaskCount == 0) {
+      return 0;
+    }
+    return totalPhaseCount / totalTaskCount;
+  }
+
+  String get summaryCaption => selectedSummaryScope == PlanSummaryScope.today
+      ? '今天优先推进最值得投入的主线'
+      : '把阶段拆清楚，本周推进会更稳';
+
+  List<PlanSummaryMetric> get summaryMetrics => selectedSummaryScope ==
+          PlanSummaryScope.today
+      ? <PlanSummaryMetric>[
+          PlanSummaryMetric(
+            label: '进行中',
+            value: '$activePlanCount',
+            caption: '当前处于执行窗口',
+          ),
+          PlanSummaryMetric(
+            label: '总任务',
+            value: '$totalTaskCount',
+            caption: '本地主线任务数',
+          ),
+          PlanSummaryMetric(
+            label: '即将到期',
+            value: '$endingSoonPlanCount',
+            caption: '7 天内结束',
+          ),
+        ]
+      : <PlanSummaryMetric>[
+          PlanSummaryMetric(
+            label: '计划数',
+            value: '${plans.length}',
+            caption: '已创建主线',
+          ),
+          PlanSummaryMetric(
+            label: '阶段数',
+            value: '$totalPhaseCount',
+            caption: '所有阶段总和',
+          ),
+          PlanSummaryMetric(
+            label: '任务数',
+            value: '$totalTaskCount',
+            caption: '继续拆解执行',
+          ),
+        ];
 
   void changeSummaryScope(PlanSummaryScope scope) {
     if (selectedSummaryScope == scope) {

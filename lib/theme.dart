@@ -35,6 +35,46 @@ class CustomTheme {
     colors: <Color>[primary, secondary],
   );
 
+  static const LinearGradient nowBackground = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: <Color>[
+      Color(0xFFEEECFF),
+      Color(0xFFF5F4FF),
+      Color(0xFFF9F8FF),
+    ],
+  );
+
+  static const LinearGradient chatBackground = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: <Color>[
+      Color(0xFF1A1740),
+      Color(0xFF2D2A6E),
+      Color(0xFF4C1D95),
+    ],
+  );
+
+  static const LinearGradient profileHeroGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: <Color>[
+      Color(0xFF1A1740),
+      Color(0xFF2D2A6E),
+      Color(0xCC6366F1),
+    ],
+  );
+
+  static const LinearGradient planHeroGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: <Color>[
+      Color(0xFF1E1B4B),
+      Color(0xFF312E81),
+      Color(0xFF4C1D95),
+    ],
+  );
+
   static final SystemUiOverlayStyle systemStyleLight = SystemUiOverlayStyle.dark
       .copyWith(
         statusBarColor: Colors.transparent,
@@ -45,6 +85,22 @@ class CustomTheme {
   /// Returns a consistent plan color from the local palette.
   static Color planColor(String colorHex) {
     return colorFromHex(colorHex);
+  }
+
+  static LinearGradient planGradient(String colorHex) {
+    final HSLColor base = HSLColor.fromColor(planColor(colorHex));
+    final Color start = base
+        .withLightness((base.lightness - 0.10).clamp(0.0, 1.0))
+        .toColor();
+    final Color middle = base.toColor();
+    final Color end = base
+        .withLightness((base.lightness + 0.08).clamp(0.0, 1.0))
+        .toColor();
+    return LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: <Color>[start, middle, end],
+    );
   }
 
   static final ThemeData light = ThemeData(

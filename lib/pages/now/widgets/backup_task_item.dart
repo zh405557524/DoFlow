@@ -13,16 +13,35 @@ class BackupTaskItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16.r),
+      borderRadius: BorderRadius.circular(18.r),
       child: Container(
         padding: EdgeInsets.all(14.w),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(18.r),
+          boxShadow: const <BoxShadow>[
+            BoxShadow(
+              color: Color(0x0D1E1B4B),
+              blurRadius: 14,
+              offset: Offset(0, 8),
+            ),
+          ],
         ),
         child: Row(
           children: [
-            const Icon(Icons.low_priority_rounded),
+            Container(
+              width: 36.w,
+              height: 36.w,
+              decoration: BoxDecoration(
+                color: const Color(0xFFEDE9FE),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              alignment: Alignment.center,
+              child: const Icon(
+                Icons.low_priority_rounded,
+                color: Color(0xFF6366F1),
+              ),
+            ),
             SizedBox(width: 10.w),
             Expanded(
               child: Column(
@@ -34,8 +53,10 @@ class BackupTaskItem extends StatelessWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    task.planTitle,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    '${task.planTitle} · ${task.phaseTitle}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF64748B),
+                    ),
                   ),
                 ],
               ),

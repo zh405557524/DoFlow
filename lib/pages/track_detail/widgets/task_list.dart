@@ -20,11 +20,37 @@ class TrackTaskList extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(18.r),
+            boxShadow: const <BoxShadow>[
+              BoxShadow(
+                color: Color(0x0D1E1B4B),
+                blurRadius: 12,
+                offset: Offset(0, 8),
+              ),
+            ],
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.check_circle_outline_rounded),
+              Container(
+                width: 24.w,
+                height: 24.w,
+                decoration: BoxDecoration(
+                  color: task.isOptional
+                      ? const Color(0x1AF59E0B)
+                      : const Color(0x1A6366F1),
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Icon(
+                  task.isOptional
+                      ? Icons.repeat_rounded
+                      : Icons.check_circle_outline_rounded,
+                  size: 14.w,
+                  color: task.isOptional
+                      ? const Color(0xFFF59E0B)
+                      : const Color(0xFF6366F1),
+                ),
+              ),
               SizedBox(width: 10.w),
               Expanded(
                 child: Column(
@@ -34,13 +60,16 @@ class TrackTaskList extends StatelessWidget {
                       task.title,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    if (task.note.isNotEmpty) ...[
-                      SizedBox(height: 6.h),
-                      Text(
-                        task.note,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                    SizedBox(height: 6.h),
+                    Text(
+                      task.note.isEmpty
+                          ? (task.isOptional ? '循环执行任务' : '顺序推进任务')
+                          : task.note,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: const Color(0xFF64748B),
+                        height: 1.5,
                       ),
-                    ],
+                    ),
                   ],
                 ),
               ),
@@ -52,7 +81,7 @@ class TrackTaskList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(999.r),
                   ),
                   child: Text(
-                    'Pending',
+                    '待同步',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: const Color(0xFF92400E),
                       fontWeight: FontWeight.w600,

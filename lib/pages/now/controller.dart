@@ -48,7 +48,7 @@ class NowController extends GetxController {
   /// Starts focus for the currently recommended task.
   Future<void> startFocus() async {
     if (recommendedTask == null) {
-      AppToast.text('No task is ready yet.');
+      AppToast.text('暂时还没有可开始的任务。');
       return;
     }
     await Get.find<NowService>().startFocus(recommendedTask!.id);
