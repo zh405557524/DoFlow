@@ -43,6 +43,7 @@ class Global {
     Get.put<ConfigStore>(ConfigStore());
     Get.put<UserStore>(UserStore());
     Get.put<PlanStore>(PlanStore());
+    Get.put<NotesStore>(NotesStore());
     Get.put<DraftStore>(DraftStore());
     Get.put<SyncStore>(SyncStore());
 
@@ -51,11 +52,13 @@ class Global {
     Get.put<TaskInstanceService>(TaskInstanceService());
     Get.put<NowService>(NowService());
     Get.put<ChatService>(ChatService());
+    Get.put<NotesService>(NotesService());
     Get.put<ProfileService>(ProfileService());
 
     await Get.find<SyncService>().bootstrap();
     await Get.find<PlanService>().bootstrap();
     await Get.find<ChatService>().bootstrap();
+    await Get.find<NotesService>().bootstrap();
     await Get.find<ProfileService>().bootstrap();
 
     ConfigStore.to.markFoundationReady();

@@ -1,5 +1,6 @@
 import 'package:doflow/pages/main/index.dart';
 import 'package:doflow/pages/main/widgets/bottom_nav.dart';
+import 'package:doflow/pages/notes/index.dart';
 import 'package:doflow/pages/now/index.dart';
 import 'package:doflow/pages/plan/index.dart';
 import 'package:doflow/pages/profile/index.dart';
@@ -18,6 +19,7 @@ class MainPage extends StatelessWidget {
   static const List<Widget> _pages = <Widget>[
     NowPage(),
     PlanPage(),
+    NotesPage(),
     ProfilePage(),
   ];
 
@@ -46,7 +48,8 @@ class MainPage extends StatelessWidget {
               final MainTab nextTab = switch (index) {
                 0 => MainTab.now,
                 2 => MainTab.plan,
-                3 => MainTab.profile,
+                3 => MainTab.notes,
+                4 => MainTab.profile,
                 _ => controller.currentTab,
               };
               controller.changeTab(nextTab);
@@ -57,6 +60,9 @@ class MainPage extends StatelessWidget {
                   return;
                 case MainTab.plan:
                   context.goNamed(RouteName.plan);
+                  return;
+                case MainTab.notes:
+                  context.goNamed(RouteName.notes);
                   return;
                 case MainTab.profile:
                   context.goNamed(RouteName.profile);

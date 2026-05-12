@@ -12,6 +12,8 @@ abstract class AppHiveBoxes {
   static const String chatMessages = 'chat_messages';
   static const String planDrafts = 'plan_drafts';
   static const String profiles = 'profiles';
+  static const String noteFolders = 'note_folders';
+  static const String noteFiles = 'note_files';
   static const String syncRecords = 'sync_records';
 
   static const List<String> all = <String>[
@@ -22,6 +24,8 @@ abstract class AppHiveBoxes {
     chatMessages,
     planDrafts,
     profiles,
+    noteFolders,
+    noteFiles,
     syncRecords,
   ];
 }

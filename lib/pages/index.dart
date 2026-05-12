@@ -2,6 +2,9 @@
 export 'battle_map/index.dart';
 export 'chat/index.dart';
 export 'main/index.dart';
+export 'note_file/index.dart';
+export 'note_folder/index.dart';
+export 'notes/index.dart';
 export 'now/index.dart';
 export 'plan/index.dart';
 export 'plan_editor/index.dart';

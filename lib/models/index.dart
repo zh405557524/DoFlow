@@ -1,5 +1,6 @@
 // Exports all domain models used by the DoFlow app.
 export 'chat.dart';
+export 'note.dart';
 export 'now.dart';
 export 'plan.dart';
 export 'profile.dart';

@@ -54,6 +54,15 @@ abstract class CustomRouter {
         ),
       ),
       GoRoute(
+        path: '/notes',
+        name: RouteName.notes,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          name: state.name,
+          child: const MainPage(initialTab: MainTab.notes),
+        ),
+      ),
+      GoRoute(
         path: '/profile',
         name: RouteName.profile,
         pageBuilder: (context, state) => MaterialPage<void>(
@@ -118,6 +127,28 @@ abstract class CustomRouter {
           key: state.pageKey,
           name: state.name,
           child: const UserProfilePage(),
+        ),
+      ),
+      GoRoute(
+        path: '/notes/folder/:id',
+        name: RouteName.noteFolder,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          name: state.name,
+          child: NoteFolderPage(
+            folderId: state.pathParameters['id'] ?? '',
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/notes/file/:id',
+        name: RouteName.noteFile,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          name: state.name,
+          child: NoteFilePage(
+            fileId: state.pathParameters['id'] ?? '',
+          ),
         ),
       ),
     ],

@@ -17,7 +17,8 @@ class MainBottomNav extends StatelessWidget {
     _MainNavItem(label: 'Now', icon: Icons.bolt_rounded),
     _MainNavItem(label: 'Chat', icon: Icons.chat_bubble_outline_rounded),
     _MainNavItem(label: 'Plan', icon: Icons.calendar_today_rounded),
-    _MainNavItem(label: 'Profile', icon: Icons.person_outline_rounded),
+    _MainNavItem(label: 'Notes', icon: Icons.description_outlined),
+    _MainNavItem(label: 'Me', icon: Icons.person_outline_rounded),
   ];
 
   @override

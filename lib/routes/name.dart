@@ -4,10 +4,13 @@ abstract class RouteName {
   static const String now = 'now';
   static const String chat = 'chat';
   static const String plan = 'plan';
+  static const String notes = 'notes';
   static const String profile = 'profile';
   static const String battleMap = 'battleMap';
   static const String trackDetail = 'trackDetail';
   static const String planEditorCreate = 'planEditorCreate';
   static const String planEditorEdit = 'planEditorEdit';
   static const String userProfile = 'userProfile';
+  static const String noteFolder = 'noteFolder';
+  static const String noteFile = 'noteFile';
 }
