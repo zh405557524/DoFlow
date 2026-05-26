@@ -58,22 +58,23 @@ class _ActionButton extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16.r),
+      borderRadius: BorderRadius.circular(14.r),
       child: Ink(
-        height: 48.h,
+        height: 46.h,
         decoration: BoxDecoration(
           color: isPrimary ? null : const Color(0xFFF8FAFC),
           gradient: isPrimary ? CustomTheme.brandGradient : null,
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(14.r),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: foreground, size: 18.w),
-            SizedBox(width: 8.w),
+            Icon(icon, color: foreground, size: 17.w),
+            SizedBox(width: 6.w),
             Text(
               label,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 15.sp,
                 color: foreground,
                 fontWeight: FontWeight.w700,
               ),

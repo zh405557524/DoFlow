@@ -17,27 +17,28 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isEnabled = onPressed != null;
+    const double buttonRadius = 18;
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onPressed,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(buttonRadius),
         child: Ink(
-          height: 56,
+          height: 52,
           decoration: BoxDecoration(
             gradient: isEnabled
                 ? CustomTheme.brandGradient
                 : const LinearGradient(
                     colors: <Color>[Color(0xFFD6DBE8), Color(0xFFCBD5E1)],
                   ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(buttonRadius),
             boxShadow: isEnabled
                 ? const <BoxShadow>[
                     BoxShadow(
                       color: Color(0x336366F1),
-                      blurRadius: 20,
-                      offset: Offset(0, 10),
+                      blurRadius: 16,
+                      offset: Offset(0, 8),
                     ),
                   ]
                 : null,
@@ -48,7 +49,7 @@ class CustomButton extends StatelessWidget {
               children: [
                 if (icon != null) ...[
                   Icon(icon, color: Colors.white),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: 6),
                 ],
                 Text(
                   label,

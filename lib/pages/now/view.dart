@@ -22,24 +22,28 @@ class NowPage extends StatelessWidget {
       builder: (NowController controller) {
         return CustomScaffold(
           body: Container(
-            decoration: const BoxDecoration(gradient: CustomTheme.nowBackground),
+            decoration: const BoxDecoration(
+              gradient: CustomTheme.nowBackground,
+            ),
             child: SafeArea(
               bottom: false,
               child: controller.isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : ListView(
-                      padding: EdgeInsets.fromLTRB(20.w, 18.h, 20.w, 24.h),
+                      padding: EdgeInsets.fromLTRB(20.w, 14.h, 20.w, 20.h),
                       children: [
                         TopStatusBar(
                           greeting: controller.currentGreeting,
                           statusLabel: controller.currentStatusLabel,
                         ),
-                        SizedBox(height: 20.h),
-                        AiSuggestionCard(suggestion: controller.suggestionText),
-                        SizedBox(height: 14.h),
-                        if (controller.recommendedTask != null)
-                          RecommendTaskCard(task: controller.recommendedTask!),
                         SizedBox(height: 16.h),
+                        AiSuggestionCard(suggestion: controller.suggestionText),
+                        SizedBox(height: 12.h),
+                        if (controller.recommendedTask != null) ...<Widget>[
+                          RecommendTaskCard(task: controller.recommendedTask!),
+                          SizedBox(height: 14.h),
+                        ] else
+                          SizedBox(height: 10.h),
                         Row(
                           children: [
                             Expanded(
@@ -68,36 +72,36 @@ class NowPage extends StatelessWidget {
                                     ? null
                                     : controller.switchCandidate,
                                 style: OutlinedButton.styleFrom(
-                                  minimumSize: Size.fromHeight(56.h),
+                                  minimumSize: Size.fromHeight(52.h),
                                   backgroundColor: Colors.white,
                                   side: BorderSide.none,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.r),
+                                    borderRadius: BorderRadius.circular(18.r),
                                   ),
                                 ),
                                 child: Text(
                                   '换一个',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
+                                  style: Theme.of(context).textTheme.titleMedium
                                       ?.copyWith(fontWeight: FontWeight.w700),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 24.h),
+                        SizedBox(height: 20.h),
                         Text(
                           '📌 备用任务',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: const Color(0xFF94A3B8),
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: const Color(0xFF94A3B8),
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
-                        SizedBox(height: 14.h),
+                        SizedBox(height: 12.h),
                         if (controller.backupTasks.isEmpty)
                           Card(
                             child: Padding(
-                              padding: EdgeInsets.all(18.w),
+                              padding: EdgeInsets.all(16.w),
                               child: Text(
                                 '还没有备用任务。先去计划页补充更多可执行任务。',
                                 style: Theme.of(context).textTheme.bodyMedium,
@@ -113,7 +117,7 @@ class NowPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 24.h),
+                        SizedBox(height: 20.h),
                       ],
                     ),
             ),

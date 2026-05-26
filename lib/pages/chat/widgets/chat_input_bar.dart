@@ -19,7 +19,7 @@ class ChatInputBar extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Container(
-        padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
+        padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 14.h),
         decoration: BoxDecoration(
           color: const Color(0x990F0D2E),
           border: const Border(top: BorderSide(color: Color(0x1FFFFFFF))),
@@ -30,7 +30,7 @@ class ChatInputBar extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.10),
-                  borderRadius: BorderRadius.circular(18.r),
+                  borderRadius: BorderRadius.circular(16.r),
                 ),
                 child: TextField(
                   controller: controller,
@@ -44,7 +44,7 @@ class ChatInputBar extends StatelessWidget {
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 16.w,
-                      vertical: 14.h,
+                      vertical: 12.h,
                     ),
                   ),
                 ),
@@ -58,9 +58,10 @@ class ChatInputBar extends StatelessWidget {
                   end: Alignment.bottomRight,
                   colors: <Color>[Color(0xFF6366F1), Color(0xFF4F46E5)],
                 ),
-                borderRadius: BorderRadius.circular(18.r),
+                borderRadius: BorderRadius.circular(16.r),
               ),
               child: IconButton(
+                constraints: BoxConstraints.tightFor(width: 54.w, height: 54.w),
                 onPressed: isSending ? null : onSend,
                 color: Colors.white,
                 icon: isSending
@@ -72,7 +73,7 @@ class ChatInputBar extends StatelessWidget {
                           color: Colors.white,
                         ),
                       )
-                    : const Icon(Icons.arrow_upward_rounded),
+                    : Icon(Icons.arrow_upward_rounded, size: 22.w),
               ),
             ),
           ],

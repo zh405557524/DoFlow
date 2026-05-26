@@ -15,7 +15,7 @@ class RecommendTaskCard extends StatelessWidget {
     final bool pendingSync = SyncStore.to.hasPendingFor(task.id);
 
     return Container(
-      padding: EdgeInsets.all(22.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
@@ -26,12 +26,12 @@ class RecommendTaskCard extends StatelessWidget {
             Color(0xFF4C1D95),
           ],
         ),
-        borderRadius: BorderRadius.circular(30.r),
+        borderRadius: BorderRadius.circular(26.r),
         boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Color(0x336366F1),
-            blurRadius: 24,
-            offset: Offset(0, 14),
+            blurRadius: 20,
+            offset: Offset(0, 12),
           ),
         ],
       ),
@@ -45,17 +45,18 @@ class RecommendTaskCard extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 14.h),
           Text(
             task.taskTitle,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontSize: 24.sp,
               color: Colors.white,
               fontWeight: FontWeight.w800,
               height: 1.2,
             ),
           ),
           if (task.taskNote.isNotEmpty) ...[
-            SizedBox(height: 14.h),
+            SizedBox(height: 12.h),
             Text(
               task.taskNote,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -65,9 +66,9 @@ class RecommendTaskCard extends StatelessWidget {
             ),
           ],
           if (pendingSync) ...[
-            SizedBox(height: 16.h),
+            SizedBox(height: 14.h),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(999.r),

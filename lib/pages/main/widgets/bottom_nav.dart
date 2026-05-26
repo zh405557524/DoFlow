@@ -24,15 +24,15 @@ class MainBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(18.w, 10.h, 18.w, 18.h),
+      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
         border: const Border(top: BorderSide(color: Color(0xFFF1F5F9))),
         boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Color(0x12000000),
-            blurRadius: 18,
-            offset: Offset(0, -8),
+            blurRadius: 16,
+            offset: Offset(0, -6),
           ),
         ],
       ),
@@ -44,9 +44,9 @@ class MainBottomNav extends StatelessWidget {
           return Expanded(
             child: InkWell(
               onTap: () => onTap(index),
-              borderRadius: BorderRadius.circular(18.r),
+              borderRadius: BorderRadius.circular(16.r),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 4.h),
+                padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -55,12 +55,13 @@ class MainBottomNav extends StatelessWidget {
                       color: isActive
                           ? CustomTheme.primary
                           : const Color(0xFF9CA3AF),
-                      size: 25.w,
+                      size: 23.w,
                     ),
-                    SizedBox(height: 4.h),
+                    SizedBox(height: 3.h),
                     Text(
                       item.label,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 13.sp,
                         color: isActive
                             ? CustomTheme.primary
                             : const Color(0xFF9CA3AF),

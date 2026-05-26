@@ -37,7 +37,7 @@ class PlanPage extends StatelessWidget {
             child: controller.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : ListView(
-                    padding: EdgeInsets.fromLTRB(20.w, 18.h, 20.w, 28.h),
+                    padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 24.h),
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,14 +51,15 @@ class PlanPage extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineLarge
-                                      ?.copyWith(fontWeight: FontWeight.w800),
+                                      ?.copyWith(
+                                        fontSize: 28.sp,
+                                        fontWeight: FontWeight.w800,
+                                      ),
                                 ),
-                                SizedBox(height: 6.h),
+                                SizedBox(height: 4.h),
                                 Text(
                                   '提供安全感，但不干扰执行',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
+                                  style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
                                         color: const Color(0xFF94A3B8),
                                       ),
@@ -70,16 +71,16 @@ class PlanPage extends StatelessWidget {
                           GestureDetector(
                             onTap: openCreatePlan,
                             child: Container(
-                              width: 82.w,
-                              height: 82.w,
+                              width: 68.w,
+                              height: 68.w,
                               decoration: BoxDecoration(
                                 gradient: CustomTheme.brandGradient,
-                                borderRadius: BorderRadius.circular(28.r),
+                                borderRadius: BorderRadius.circular(22.r),
                                 boxShadow: const <BoxShadow>[
                                   BoxShadow(
                                     color: Color(0x336366F1),
-                                    blurRadius: 24,
-                                    offset: Offset(0, 12),
+                                    blurRadius: 18,
+                                    offset: Offset(0, 10),
                                   ),
                                 ],
                               ),
@@ -87,18 +88,18 @@ class PlanPage extends StatelessWidget {
                               child: Icon(
                                 Icons.add_rounded,
                                 color: Colors.white,
-                                size: 34.w,
+                                size: 30.w,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 18.h),
                       BattleMapHero(
                         planCount: controller.plans.length,
                         onOpenBattleMap: openBattleMap,
                       ),
-                      SizedBox(height: 18.h),
+                      SizedBox(height: 16.h),
                       PlanSummaryTabs(
                         selectedScope: controller.selectedSummaryScope,
                         summaryTitle: controller.summaryTitle,
@@ -107,7 +108,7 @@ class PlanPage extends StatelessWidget {
                         summaryProgress: controller.summaryProgress,
                         onScopeChanged: controller.changeSummaryScope,
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 18.h),
                       Row(
                         children: [
                           Text(
@@ -117,10 +118,11 @@ class PlanPage extends StatelessWidget {
                           const Spacer(),
                           Text(
                             '${controller.plans.length} 条',
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: const Color(0xFF94A3B8),
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: const Color(0xFF94A3B8),
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ],
                       ),

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 /// Formats a friendly greeting based on the current hour.
 String buildGreeting(DateTime now) {
   if (now.hour < 12) {
-    return '早上好，先把最重要的一件事做掉';
+    return '早上好 👋';
   }
   if (now.hour < 18) {
-    return '下午好，继续把主线往前推';
+    return '下午好 ☀️';
   }
-  return '晚上好，收一收今天的节奏';
+  return '晚上好 🌙';
 }
 
 /// Formats a short time label for the Now page.

@@ -45,13 +45,15 @@ class _ChatPageState extends State<ChatPage> {
         return CustomScaffold(
           backgroundColor: Colors.transparent,
           body: Container(
-            decoration: const BoxDecoration(gradient: CustomTheme.chatBackground),
+            decoration: const BoxDecoration(
+              gradient: CustomTheme.chatBackground,
+            ),
             child: SafeArea(
               bottom: false,
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 10.h),
+                    padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 8.h),
                     child: Row(
                       children: [
                         _TopButton(
@@ -65,15 +67,23 @@ class _ChatPageState extends State<ChatPage> {
                             children: [
                               Text(
                                 'AI 执行助手',
-                                style: Theme.of(context).textTheme.headlineSmall
-                                    ?.copyWith(color: Colors.white),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 24.sp,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                               ),
-                              SizedBox(height: 4.h),
+                              SizedBox(height: 2.h),
                               Text(
                                 'gpt-4o · 在线',
-                                style: Theme.of(context).textTheme.bodyLarge
+                                style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
-                                      color: Colors.white.withValues(alpha: 0.65),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.65,
+                                      ),
                                     ),
                               ),
                             ],
@@ -88,25 +98,29 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   Expanded(
                     child: ListView(
-                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 12.h),
+                      padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 10.h),
                       children: controller.messages.isEmpty
                           ? [
                               Padding(
-                                padding: EdgeInsets.only(top: 80.h),
+                                padding: EdgeInsets.only(top: 44.h),
                                 child: Center(
                                   child: Text(
                                     '把想法说出来，我帮你整理成可执行计划。',
-                                    style: Theme.of(context).textTheme.bodyLarge
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
                                         ?.copyWith(
                                           color: Colors.white70,
-                                          height: 1.6,
+                                          height: 1.5,
                                         ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
                               ),
                             ]
-                          : controller.messages.expand((ChatMessageModel message) {
+                          : controller.messages.expand((
+                              ChatMessageModel message,
+                            ) {
                               final List<Widget> children = [
                                 MessageBubble(message: message),
                               ];
@@ -131,7 +145,10 @@ class _ChatPageState extends State<ChatPage> {
                                                   'entry': 'chat',
                                                 },
                                               )
-                                              .then((_) => controller.loadMessages());
+                                              .then(
+                                                (_) =>
+                                                    controller.loadMessages(),
+                                              );
                                         },
                                       ),
                                     ),
@@ -144,7 +161,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 46.h,
+                    height: 42.h,
                     child: ListView.separated(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       scrollDirection: Axis.horizontal,
@@ -157,7 +174,10 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                           label: Text(
                             text,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13.sp,
+                            ),
                           ),
                           onPressed: () async {
                             await controller.sendMessage(text);
@@ -200,10 +220,13 @@ class _TopButton extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.10),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(14.r),
       ),
       child: IconButton(
+        constraints: BoxConstraints.tightFor(width: 56.w, height: 56.w),
         onPressed: onTap,
+        padding: EdgeInsets.zero,
+        iconSize: 22.w,
         icon: Icon(icon, color: Colors.white),
       ),
     );

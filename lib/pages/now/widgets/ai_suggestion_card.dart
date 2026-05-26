@@ -14,17 +14,17 @@ class AiSuggestionCard extends StatelessWidget {
       children: [
         Text(
           '🤖 AI 建议你现在做：',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: const Color(0xFF94A3B8),
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 6.h),
         Text(
           suggestion,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: const Color(0xFF94A3B8),
-            height: 1.5,
+            height: 1.4,
           ),
         ),
       ],

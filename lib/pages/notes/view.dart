@@ -72,28 +72,29 @@ class NotesPage extends StatelessWidget {
             child: controller.isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : ListView(
-                    padding: EdgeInsets.fromLTRB(20.w, 18.h, 20.w, 28.h),
+                    padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 24.h),
                     children: [
                       Text(
                         'Notes',
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
+                              fontSize: 24.sp,
                               color: const Color(0xFF0F172A),
                               fontWeight: FontWeight.w800,
                             ),
                       ),
-                      SizedBox(height: 18.h),
+                      SizedBox(height: 16.h),
                       NoteCreateActions(
                         onCreateFolder: createFolder,
                         onCreateNote: createFile,
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 18.h),
                       Divider(
                         height: 1,
                         color: const Color(0xFFE8EDF5),
                         thickness: 1,
                       ),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 18.h),
                       if (controller.rootFolders.isEmpty &&
                           controller.rootFiles.isEmpty)
                         NoteEmptyState(
@@ -103,7 +104,7 @@ class NotesPage extends StatelessWidget {
                         ),
                       ...controller.rootFolders.map((NoteFolderModel folder) {
                         return Padding(
-                          padding: EdgeInsets.only(bottom: 12.h),
+                          padding: EdgeInsets.only(bottom: 10.h),
                           child: NoteEntryCard(
                             title: folder.name,
                             subtitle: '${controller.itemCountFor(folder)} 项',
@@ -114,16 +115,16 @@ class NotesPage extends StatelessWidget {
                         );
                       }),
                       if (controller.rootFiles.isNotEmpty) ...[
-                        SizedBox(height: 12.h),
+                        SizedBox(height: 10.h),
                         Text(
                           '根目录文件',
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
-                        SizedBox(height: 12.h),
+                        SizedBox(height: 10.h),
                         ...controller.rootFiles.map((NoteFileModel file) {
                           return Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
+                            padding: EdgeInsets.only(bottom: 10.h),
                             child: NoteEntryCard(
                               title: file.title,
                               subtitle: file.isMarkdown ? 'Markdown' : '文档',

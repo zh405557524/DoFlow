@@ -19,6 +19,8 @@ class ProfilePage extends StatelessWidget {
       global: false,
       builder: (ProfileController controller) {
         final profile = controller.profile;
+        final List<String> previewTags =
+            profile?.tags.take(2).toList() ?? const <String>[];
 
         return CustomScaffold(
           body: SafeArea(
@@ -34,62 +36,69 @@ class ProfilePage extends StatelessWidget {
                               .pushNamed(RouteName.userProfile)
                               .then((_) => controller.loadProfile());
                         },
-                        borderRadius: BorderRadius.circular(32.r),
+                        borderRadius: BorderRadius.circular(26.r),
                         child: Container(
                           decoration: BoxDecoration(
                             gradient: CustomTheme.profileHeroGradient,
-                            borderRadius: BorderRadius.circular(32.r),
+                            borderRadius: BorderRadius.circular(26.r),
                           ),
                           child: Stack(
                             children: [
                               Positioned(
-                                right: -80.w,
-                                top: -70.h,
+                                right: -68.w,
+                                top: -56.h,
                                 child: Container(
-                                  width: 220.w,
-                                  height: 220.w,
+                                  width: 184.w,
+                                  height: 184.w,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.08),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.08,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.fromLTRB(
-                                  20.w,
-                                  20.h,
-                                  20.w,
-                                  22.h,
+                                  16.w,
+                                  16.h,
+                                  16.w,
+                                  16.h,
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          width: 72.w,
-                                          height: 72.w,
+                                          width: 60.w,
+                                          height: 60.w,
                                           decoration: BoxDecoration(
-                                            color: colorFromHex(profile.avatarBg),
-                                            borderRadius: BorderRadius.circular(24.r),
+                                            color: colorFromHex(
+                                              profile.avatarBg,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              20.r,
+                                            ),
                                             boxShadow: const <BoxShadow>[
                                               BoxShadow(
                                                 color: Color(0x336366F1),
-                                                blurRadius: 22,
-                                                offset: Offset(0, 12),
+                                                blurRadius: 18,
+                                                offset: Offset(0, 10),
                                               ),
                                             ],
                                           ),
                                           alignment: Alignment.center,
                                           child: Text(
                                             profile.avatar,
-                                            style: TextStyle(fontSize: 34.sp),
+                                            style: TextStyle(fontSize: 28.sp),
                                           ),
                                         ),
-                                        SizedBox(width: 16.w),
+                                        SizedBox(width: 12.w),
                                         Expanded(
                                           child: Column(
                                             crossAxisAlignment:
@@ -101,78 +110,102 @@ class ProfilePage extends StatelessWidget {
                                                     .textTheme
                                                     .headlineMedium
                                                     ?.copyWith(
+                                                      fontSize: 22.sp,
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.w800,
+                                                      fontWeight:
+                                                          FontWeight.w800,
                                                     ),
                                               ),
-                                              SizedBox(height: 8.h),
+                                              SizedBox(height: 4.h),
                                               Text(
                                                 profile.bio,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .bodyLarge
+                                                    .bodyMedium
                                                     ?.copyWith(
+                                                      fontSize: 13.sp,
                                                       color: Colors.white
-                                                          .withValues(alpha: 0.78),
-                                                      height: 1.5,
+                                                          .withValues(
+                                                            alpha: 0.78,
+                                                          ),
+                                                      height: 1.35,
                                                     ),
                                               ),
-                                              SizedBox(height: 10.h),
-                                              Wrap(
-                                                spacing: 8.w,
-                                                runSpacing: 8.h,
-                                                children: profile.tags
-                                                    .take(3)
-                                                    .map((String tag) {
-                                                      return Container(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
-                                                              horizontal: 10.w,
-                                                              vertical: 6.h,
-                                                            ),
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white
-                                                              .withValues(
-                                                                alpha: 0.10,
+                                              if (previewTags
+                                                  .isNotEmpty) ...<Widget>[
+                                                SizedBox(height: 6.h),
+                                                Row(
+                                                  children: [
+                                                    for (
+                                                      int index = 0;
+                                                      index <
+                                                          previewTags.length;
+                                                      index++
+                                                    ) ...<Widget>[
+                                                      Flexible(
+                                                        child: Container(
+                                                          padding:
+                                                              EdgeInsets.symmetric(
+                                                                horizontal:
+                                                                    10.w,
+                                                                vertical: 5.h,
                                                               ),
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                999.r,
-                                                              ),
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white
+                                                                .withValues(
+                                                                  alpha: 0.10,
+                                                                ),
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  999.r,
+                                                                ),
+                                                          ),
+                                                          child: Text(
+                                                            previewTags[index],
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: Theme.of(context)
+                                                                .textTheme
+                                                                .bodyMedium
+                                                                ?.copyWith(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize:
+                                                                      13.sp,
+                                                                ),
+                                                          ),
                                                         ),
-                                                        child: Text(
-                                                          tag,
-                                                          style: Theme.of(context)
-                                                              .textTheme
-                                                              .bodyMedium
-                                                              ?.copyWith(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                        ),
-                                                      );
-                                                    })
-                                                    .toList(),
-                                              ),
+                                                      ),
+                                                      if (index !=
+                                                          previewTags.length -
+                                                              1)
+                                                        SizedBox(width: 8.w),
+                                                    ],
+                                                  ],
+                                                ),
+                                              ],
                                             ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 18.h),
+                                    SizedBox(height: 12.h),
                                     Row(
                                       children: [
                                         Expanded(
                                           child: _HeroStat(
-                                            value:
-                                                '${controller.planCount}',
+                                            value: '${controller.planCount}',
                                             label: '任务',
                                           ),
                                         ),
-                                        SizedBox(width: 12.w),
+                                        SizedBox(width: 10.w),
                                         Expanded(
                                           child: _HeroStat(
                                             value:
@@ -180,7 +213,7 @@ class ProfilePage extends StatelessWidget {
                                             label: '完成',
                                           ),
                                         ),
-                                        SizedBox(width: 12.w),
+                                        SizedBox(width: 10.w),
                                         Expanded(
                                           child: _HeroStat(
                                             value:
@@ -261,7 +294,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       SizedBox(height: 16.h),
                       Container(
-                        padding: EdgeInsets.all(18.w),
+                        padding: EdgeInsets.all(16.w),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
                             begin: Alignment.topLeft,
@@ -278,17 +311,13 @@ class ProfilePage extends StatelessWidget {
                           children: [
                             Text(
                               '产品理念',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
+                              style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(color: Colors.white),
                             ),
-                            SizedBox(height: 10.h),
+                            SizedBox(height: 8.h),
                             Text(
                               '始终显示“现在应该做什么”，而不是展示所有可能性。先把执行路径变短，再把成就感做出来。',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
+                              style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     color: Colors.white.withValues(alpha: 0.78),
                                     height: 1.6,
@@ -315,25 +344,27 @@ class _HeroStat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 14.h),
+      padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
         color: Colors.white.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
         children: [
           Text(
             value,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontSize: 22.sp,
               color: Colors.white,
               fontWeight: FontWeight.w800,
             ),
           ),
-          SizedBox(height: 6.h),
+          SizedBox(height: 4.h),
           Text(
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Colors.white.withValues(alpha: 0.7),
+              fontSize: 13.sp,
             ),
           ),
         ],
@@ -351,23 +382,28 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.all(18.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(28.r),
+        borderRadius: BorderRadius.circular(24.r),
         boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Color(0x0D1E1B4B),
-            blurRadius: 22,
-            offset: Offset(0, 10),
+            blurRadius: 18,
+            offset: Offset(0, 8),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: Theme.of(context).textTheme.titleLarge),
-          SizedBox(height: 16.h),
+          Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+          ),
+          SizedBox(height: 14.h),
           ...children,
         ],
       ),
@@ -391,16 +427,16 @@ class _EnergyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 18.h),
+      padding: EdgeInsets.symmetric(vertical: 16.h),
       decoration: BoxDecoration(
         gradient: active ? CustomTheme.brandGradient : null,
         color: active ? null : const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(22.r),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: Column(
         children: [
-          Text(emoji, style: TextStyle(fontSize: 20.sp)),
-          SizedBox(height: 8.h),
+          Text(emoji, style: TextStyle(fontSize: 18.sp)),
+          SizedBox(height: 6.h),
           Text(
             title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -408,11 +444,12 @@ class _EnergyTile extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 3.h),
           Text(
             subtitle,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: active ? Colors.white70 : CustomTheme.textSecondary,
+              fontSize: 13.sp,
             ),
           ),
         ],
@@ -437,32 +474,32 @@ class _ModeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 18.h),
+      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 16.h),
       decoration: BoxDecoration(
         color: active ? const Color(0xFFF1EEFF) : const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(22.r),
+        borderRadius: BorderRadius.circular(20.r),
         border: active
             ? Border.all(color: const Color(0x4D6366F1), width: 1.6)
             : null,
       ),
       child: Row(
         children: [
-          Text(emoji, style: TextStyle(fontSize: 20.sp)),
-          SizedBox(width: 12.w),
+          Text(emoji, style: TextStyle(fontSize: 18.sp)),
+          SizedBox(width: 10.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                SizedBox(height: 6.h),
+                SizedBox(height: 4.h),
                 Text(
                   subtitle,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: const Color(0xFF94A3B8),
                   ),
                 ),
@@ -470,10 +507,7 @@ class _ModeTile extends StatelessWidget {
             ),
           ),
           if (active)
-            const Icon(
-              Icons.check_rounded,
-              color: CustomTheme.primary,
-            ),
+            const Icon(Icons.check_rounded, color: CustomTheme.primary),
         ],
       ),
     );

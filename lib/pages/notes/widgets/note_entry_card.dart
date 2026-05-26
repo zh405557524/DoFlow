@@ -24,33 +24,33 @@ class NoteEntryCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18.r),
+        borderRadius: BorderRadius.circular(16.r),
         child: Ink(
-          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(18.r),
+            borderRadius: BorderRadius.circular(16.r),
             boxShadow: const <BoxShadow>[
               BoxShadow(
                 color: Color(0x0A0F172A),
-                blurRadius: 18,
-                offset: Offset(0, 8),
+                blurRadius: 16,
+                offset: Offset(0, 6),
               ),
             ],
           ),
           child: Row(
             children: [
               Container(
-                width: 40.w,
-                height: 40.w,
+                width: 36.w,
+                height: 36.w,
                 decoration: BoxDecoration(
                   color: iconColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12.r),
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
                 alignment: Alignment.center,
-                child: Icon(icon, color: iconColor, size: 22.w),
+                child: Icon(icon, color: iconColor, size: 20.w),
               ),
-              SizedBox(width: 14.w),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +58,7 @@ class NoteEntryCard extends StatelessWidget {
                     Text(
                       title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontSize: 15.sp,
                         color: const Color(0xFF0F172A),
                         fontWeight: FontWeight.w700,
                       ),
@@ -77,7 +78,7 @@ class NoteEntryCard extends StatelessWidget {
               Icon(
                 Icons.more_vert_rounded,
                 color: const Color(0xFF94A3B8),
-                size: 20.w,
+                size: 18.w,
               ),
             ],
           ),
