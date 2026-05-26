@@ -54,6 +54,7 @@ class Global {
     Get.put<ChatService>(ChatService());
     Get.put<NotesService>(NotesService());
     Get.put<ProfileService>(ProfileService());
+    Get.put<LocalSeedService>(LocalSeedService());
 
     await Get.find<SyncService>().bootstrap();
     await Get.find<PlanService>().bootstrap();

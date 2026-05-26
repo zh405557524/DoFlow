@@ -1,11 +1,14 @@
 import 'package:doflow/pages/user_profile/index.dart';
+import 'package:doflow/routes/index.dart';
 import 'package:doflow/store/index.dart';
 import 'package:doflow/theme.dart';
 import 'package:doflow/utils/index.dart';
 import 'package:doflow/widgets/index.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 /// Renders the editable profile screen.
 class UserProfilePage extends StatelessWidget {
@@ -44,11 +47,17 @@ class UserProfilePage extends StatelessWidget {
                         onTap: () => Navigator.of(context).pop(),
                       ),
                       Expanded(
-                        child: Text(
-                          '个人信息',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onLongPress: kReleaseMode
+                              ? null
+                              : () => context.pushNamed(RouteName.debugTools),
+                          child: Text(
+                            '个人信息',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),

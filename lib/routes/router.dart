@@ -151,6 +151,15 @@ abstract class CustomRouter {
           ),
         ),
       ),
+      GoRoute(
+        path: '/debug/tools',
+        name: RouteName.debugTools,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          name: state.name,
+          child: const DebugToolsPage(),
+        ),
+      ),
     ],
   );
 }

@@ -28,6 +28,19 @@ abstract class AppHiveBoxes {
     noteFiles,
     syncRecords,
   ];
+
+  static const List<String> business = <String>[
+    plans,
+    planPhases,
+    planTasks,
+    taskInstances,
+    chatMessages,
+    planDrafts,
+    profiles,
+    noteFolders,
+    noteFiles,
+    syncRecords,
+  ];
 }
 
 /// Stores supported task instance statuses.
@@ -80,4 +93,19 @@ abstract class AppPlanColors {
     '#C2410C',
     '#7C3AED',
   ];
+}
+
+/// Stores stable identifiers used by the reusable local demo seed.
+abstract class DemoSeedIds {
+  static const String planJobSwitch = 'plan_job_switch';
+  static const String planLoveProgress = 'plan_love_progress';
+  static const String planFlutterPortfolio = 'plan_flutter_portfolio';
+
+  static const String draftChatGenerated = 'draft_chat_generated';
+  static const String draftChatApplied = 'draft_chat_applied';
+
+  static const String profileDemoUser = 'profile_demo_user';
+
+  static const String noteRootProduct = 'note_root_product';
+  static const String noteRootAndroid = 'note_root_android';
 }

@@ -1,6 +1,7 @@
 // Exports all page modules used by the app router.
 export 'battle_map/index.dart';
 export 'chat/index.dart';
+export 'debug_tools/index.dart';
 export 'main/index.dart';
 export 'note_file/index.dart';
 export 'note_folder/index.dart';

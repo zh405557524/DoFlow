@@ -13,4 +13,5 @@ abstract class RouteName {
   static const String userProfile = 'userProfile';
   static const String noteFolder = 'noteFolder';
   static const String noteFile = 'noteFile';
+  static const String debugTools = 'debugTools';
 }
