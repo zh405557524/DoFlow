@@ -21,7 +21,7 @@ class SplashController extends GetxController {
     }
 
     if (ConfigStore.to.isFoundationReady.value) {
-      context.goNamed(RouteName.now);
+      context.goNamed(RouteName.chatHome);
     }
   }
 }

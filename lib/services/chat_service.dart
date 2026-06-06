@@ -45,6 +45,18 @@ class ChatService extends GetxService {
     return messages;
   }
 
+  /// Appends a local assistant message without generating a new draft.
+  Future<void> addAssistantMessage(String content, {String? draftId}) async {
+    final ChatMessageModel message = ChatMessageModel(
+      id: _uuid.v4(),
+      role: 'assistant',
+      content: content.trim(),
+      createdAt: DateTime.now(),
+      draftId: draftId,
+    );
+    await _messagesBox.put(message.id, message.toMap());
+  }
+
   /// Returns a single draft for the editor route.
   PlanDraftModel? getDraftById(String draftId) {
     return DraftStore.to.getDraftById(draftId);

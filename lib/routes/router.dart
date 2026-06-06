@@ -28,11 +28,29 @@ abstract class CustomRouter {
       ),
       GoRoute(
         path: '/',
+        name: RouteName.chatHome,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          name: state.name,
+          child: const ChatHomePage(),
+        ),
+      ),
+      GoRoute(
+        path: '/today/focus',
+        name: RouteName.todayFocus,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          name: state.name,
+          child: const TodayFocusPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/now',
         name: RouteName.now,
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: const MainPage(initialTab: MainTab.now),
+          child: const NowPage(),
         ),
       ),
       GoRoute(
@@ -50,7 +68,7 @@ abstract class CustomRouter {
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: const MainPage(initialTab: MainTab.plan),
+          child: const PlanPage(),
         ),
       ),
       GoRoute(
@@ -59,7 +77,7 @@ abstract class CustomRouter {
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: const MainPage(initialTab: MainTab.notes),
+          child: const NotesPage(),
         ),
       ),
       GoRoute(
@@ -68,7 +86,7 @@ abstract class CustomRouter {
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: const MainPage(initialTab: MainTab.profile),
+          child: const ProfilePage(),
         ),
       ),
       GoRoute(
@@ -90,6 +108,23 @@ abstract class CustomRouter {
             trackId: state.pathParameters['trackId'] ?? '',
           ),
         ),
+      ),
+      GoRoute(
+        path: '/plan/create',
+        name: RouteName.planCreate,
+        pageBuilder: (context, state) {
+          final Map<String, dynamic> extra =
+              state.extra as Map<String, dynamic>? ?? <String, dynamic>{};
+          return MaterialPage<void>(
+            key: state.pageKey,
+            name: state.name,
+            child: PlanEditorPage(
+              mode: PlanEditorMode.create,
+              draftId: extra['draftId'] as String?,
+              entry: extra['entry'] as String?,
+            ),
+          );
+        },
       ),
       GoRoute(
         path: '/plan/editor',
@@ -135,9 +170,7 @@ abstract class CustomRouter {
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: NoteFolderPage(
-            folderId: state.pathParameters['id'] ?? '',
-          ),
+          child: NoteFolderPage(folderId: state.pathParameters['id'] ?? ''),
         ),
       ),
       GoRoute(
@@ -146,9 +179,7 @@ abstract class CustomRouter {
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           name: state.name,
-          child: NoteFilePage(
-            fileId: state.pathParameters['id'] ?? '',
-          ),
+          child: NoteFilePage(fileId: state.pathParameters['id'] ?? ''),
         ),
       ),
       GoRoute(
