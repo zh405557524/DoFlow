@@ -1,0 +1,55 @@
+---
+description: Flutter go_router 导航规则
+globs: "lib/routes/**/*.dart,lib/pages/**/*.dart"
+alwaysApply: false
+---
+
+# 03-导航
+
+## 1. 路由目录
+
+```text
+lib/routes/
+├── index.dart
+├── name.dart
+├── router.dart
+├── observers.dart
+└── transitions.dart
+```
+
+## 2. 路由表维护
+
+- 所有页面路由在 `RouteName` 中声明静态常量。
+- 所有 `GoRoute` 在 `routes/router.dart` 的 `CustomRouter.config` 中注册。
+- 新增页面时同步更新 `RouteName`、`router.dart`；页面类在 `routes/index.dart` 统一 export。
+- 不在业务代码里写裸路径字符串。
+
+## 3. 跳转规则
+
+- 主 tab 内切换由主框架 Controller 管理。
+- 详情和二级页使用 `context.pushNamed`。
+- 替换主路径使用 `context.goNamed`。
+- 页面跳转统一采用命名路由：`context.pushNamed(RouteName.xxx)`。
+
+## 4. 登录守卫
+
+- 守卫集中在 `routes/router.dart` 的 `redirect`。
+- 未登录访问需要登录的页面时跳转登录页。
+- 登录成功后返回原目标页。
+- 登录页和协议 / 隐私页不需要登录。
+
+## 5. 参数规则
+
+- 简单 key-value 字符串 → `queryParameters`。
+- 复杂对象 → `extra`。
+- 资源 ID 等路径参数 → `pathParameters` / `params`。
+- 页面回传使用 `await context.pushNamed(...)` + 目标页 `context.pop(result)`。
+- 禁止通过全局变量、静态字段或 import 隐式传参。
+
+## 6. 子路由
+
+- 主功能使用根路径（如 `/feature`）。
+- 子功能使用相对路径（不以 `/` 开头），写在父路由的 `routes: []` 中。
+- 子路由名在 `RouteName` 中保持主从语义一致。
+
+路由注册与跳转的完整模板见 `task-new_feature.mdc` §3.4。

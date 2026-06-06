@@ -1,5 +1,5 @@
 import 'package:doflow/models/index.dart';
-import 'package:doflow/pages/plan_editor/widgets/task_item.dart';
+import 'package:doflow/pages/plan/editor/widgets/task_item.dart';
 import 'package:doflow/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

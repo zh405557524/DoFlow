@@ -1,0 +1,299 @@
+---
+description: Flutter 工程初始化、目录结构与依赖策略
+globs: "lib/**/*.dart,pubspec.yaml"
+alwaysApply: true
+---
+
+# 01-工程与结构
+
+## 1. 项目定位
+
+Flutter 移动 App 前端工程。后端、接口、供应商未全部确定时，必须先建立 Controller 级 mock / real 开关和真实 API 静态方法基线。
+
+## 2. 技术栈
+
+- Flutter
+- GetX
+- go_router
+- Dio
+- GetStorage
+- Hive
+- package_info_plus
+- flutter_screenutil，设计基准 `375 x 812`
+- flutter_localizations + intl
+
+不使用 Riverpod、Provider、Drift 作为本项目主路线。
+
+## 3. 初始化目标
+
+初始化必须完成：
+
+1. `pubspec.yaml` 基础依赖。
+2. `lib/main.dart` 启动入口。
+3. `lib/global.dart` 全局初始化。
+4. `lib/theme.dart` 主题与系统状态栏（与 `theme.dart` 保持一致）。
+5. `lib/routes/` 路由基础设施。
+6. `lib/services/` HTTP、Storage、Event、Mock 服务。
+7. `lib/store/` 全局状态（至少 Config、User）。
+8. `lib/widgets/` CustomScaffold、Toast、Loading、Empty、Error 等基础 UI。
+9. `lib/pages/` 最小主框架或占位页。
+10. `test/widget_test.dart` 最小 smoke test。
+
+## 4. 启动流程
+
+```text
+main()
+  -> WidgetsFlutterBinding.ensureInitialized()
+  -> SystemChrome.setSystemUIOverlayStyle()
+  -> Global.init()
+  -> StorageService.init()
+  -> register services
+  -> register stores
+  -> runApp()
+  -> MaterialApp.router()
+```
+
+## 5. 全局注册
+
+`Global.init()` 至少注册：
+
+- `StorageService`
+- `EventService`
+- `HttpService`
+- `ConfigStore`
+- `UserStore`
+
+按模块需要注册 MockService 及其他 Store / Service。
+
+## 6. 初始化验收
+
+- `flutter pub get` 成功。
+- `flutter analyze` 通过。
+- `flutter test` 通过。
+- App 可启动到主框架或占位页。
+- 工程内 `.cursor/rules/` 只包含本 Flutter 项目的规则文件。
+
+## 7. 顶层结构
+
+```text
+lib/
+├── apis/                  # 真实接口静态 API 封装
+├── components/            # 跨页面业务组件
+├── enums/                 # 全局枚举
+├── generated/             # 生成代码，只读
+├── l10n/                  # 多语言资源
+├── models/                # 参数、响应、领域模型
+├── pages/                 # 页面与页面子流程
+├── plugins/               # 平台能力和第三方 SDK 封装
+├── routes/                # go_router 路由
+├── services/              # HTTP、存储、事件、mock、平台服务
+├── store/                 # 跨页面全局状态
+├── utils/                 # 常量、资源、格式化、日志
+├── widgets/               # 与业务解耦的基础 UI
+├── global.dart
+├── main.dart
+└── theme.dart
+```
+
+## 8. 页面模块标准结构
+
+所有 `lib/pages/{feature_name}/` 都以同一套标准结构为基础，但只创建真实需要的目录。没有私有组件就不创建 `widgets/`；没有弹层就不创建 `dialog/`；没有子流程就不创建 `{sub_feature}/`。
+
+```text
+lib/pages/{feature_name}/
+├── view.dart             # {FeatureName}Page，页面根视图
+├── controller.dart       # {FeatureName}Controller，业务/状态控制
+├── index.dart            # 导出或聚合本目录所有内容
+├── widgets/              # 页面内可复用组件（可选）
+│   └── my_widget.dart
+├── dialog/               # 弹框、BottomSheet、Picker 等（可选）
+│   └── confirm_dialog.dart
+└── {sub_feature}/        # 子页面或独立子流程（可选）
+    ├── view.dart
+    ├── controller.dart
+    └── index.dart
+```
+
+子功能如果本身是独立页面或独立流程，也继续使用同样标准。禁止把子页面写成 `detail_controller.dart`、`recharge_view.dart` 这类扁平文件。
+
+禁止在未读取对应 Figma frame 或模块文档前预设具体 widget 文件名；是否拆分、如何命名，必须由 UI 层级或真实复用需求决定。
+
+## 9. pages 业务目录
+
+`lib/pages/` 采用 **两层寻址**：先定 **业务域**，再进 **页面模块**。AI 定位代码时按「域 → 模块 → 文件」向下查；新增页面时先归入域，再建目录并更新本表与 `RouteName`。
+
+**业务域**对应 `lib/pages/{domain}/` 入口目录；**子流程**落在 `lib/pages/{domain}/{sub_feature}/` 下。
+
+### 9.1 总览（业务域 → 页面模块）
+
+```text
+lib/pages/
+│
+├── splash/                         # shell：启动
+├── chat_home/                      # shell + focus 入口
+│   └── chat/                       # 子流程：独立聊天
+├── main/                           # shell：四 tab
+├── foundation_placeholder/         # shell：初始化占位
+│
+├── now/                            # focus 入口
+│   └── today_focus/                # 子流程：全屏专注
+│
+├── plan/                           # plan 入口
+│   ├── editor/                     # 子流程：创建/编辑计划
+│   ├── battle_map/                 # 子流程：战场总览
+│   └── track_detail/               # 子流程：单计划详情
+│
+├── notes/                          # notes 入口
+│   ├── folder/                     # 子流程：文件夹浏览
+│   └── file/                       # 子流程：文件编辑
+│
+├── profile/                        # profile 入口
+│   └── user_profile/               # 子流程：资料编辑
+│
+└── debug_tools/                    # debug 入口
+```
+
+同一业务域内：域根目录（如 `notes/`）为**入口页**；`{sub_feature}/` 为**子流程页**。域入口 `index.dart` 应 export 本子流程模块。
+
+**目录收拢约定：** 新子流程必须落在 `pages/{domain}/{sub_feature}/`（见 §8），并在域入口 `index.dart` 聚合 export。
+
+### 9.2 shell · 启动与框架
+
+| 模块目录 | RouteName | 角色 | 业务说明 | 主要依赖 |
+|----------|-----------|------|----------|----------|
+| `splash/` | `splash` | 入口 | 启动页；延迟 bootstrap 后进入主流程 | `ConfigStore` |
+| `chat_home/` | `chatHome` | 入口 | **v2 对话优先首页**；聊天 + 今日推荐 | `ChatService`、`NowService` |
+| `main/` | — | 入口 | 四 tab shell（Now / Plan / Notes / Profile） | `MainController` |
+| `foundation_placeholder/` | — | 入口 | Global 初始化占位 / 就绪检查 | `Global`、`InstallationService` |
+
+### 9.3 focus · 专注与 AI 对话
+
+| 模块目录 | RouteName | 角色 | 业务说明 | 主要依赖 |
+|----------|-----------|------|----------|----------|
+| `now/` | `now` | 入口 | 当前时刻推荐；主任务、备选、AI 建议 | `NowService`、`TaskInstanceService` |
+| `now/today_focus/` | `todayFocus` | 子流程 | 全屏单任务专注计时 | `NowService`、`TaskInstanceService` |
+| `chat_home/chat/` | `chat` | 子流程 | 独立聊天；消息、发送、草稿 | `ChatService` |
+
+域内跳转：`chat_home` → `chat_home/chat`；`chat_home` / `now` → `now/today_focus`。
+
+### 9.4 plan · 计划
+
+| 模块目录 | RouteName | 角色 | 业务说明 | 主要依赖 |
+|----------|-----------|------|----------|----------|
+| `plan/` | `plan` | 入口 | 计划列表；今日/本周摘要 | `PlanService`、`PlanStore` |
+| `plan/editor/` | `planCreate` / `planEditorCreate` / `planEditorEdit` | 子流程 | 创建/编辑计划；phase、task | `PlanService` |
+| `plan/battle_map/` | `battleMap` | 子流程 | 战场地图总览 | `PlanService` |
+| `plan/track_detail/` | `trackDetail` | 子流程 | 单计划详情；时间线、任务实例 | `PlanService`、`TaskInstanceService` |
+
+域内跳转：`plan` → `plan/editor` / `plan/battle_map` → `plan/track_detail`。
+
+### 9.5 notes · 笔记
+
+| 模块目录 | RouteName | 角色 | 业务说明 | 主要依赖 |
+|----------|-----------|------|----------|----------|
+| `notes/` | `notes` | 入口 | 笔记根目录；文件夹与文件列表 | `NotesService` |
+| `notes/folder/` | `noteFolder` | 子流程 | 嵌套文件夹浏览；面包屑 | `NotesService` |
+| `notes/file/` | `noteFile` | 子流程 | 文件编辑与 Markdown 预览 | `NotesService`、`StorageService` |
+
+域内跳转：`notes` → `notes/folder` → `notes/file`（可多级 folder）。
+
+### 9.6 profile · 个人
+
+| 模块目录 | RouteName | 角色 | 业务说明 | 主要依赖 |
+|----------|-----------|------|----------|----------|
+| `profile/` | `profile` | 入口 | 我的页；统计摘要与二级入口 | `ProfileService`、`PlanStore`、`SyncStore` |
+| `profile/user_profile/` | `userProfile` | 子流程 | 用户资料编辑 | `ProfileService`、`UserStore` |
+
+域内跳转：`profile` → `profile/user_profile`。
+
+### 9.7 debug · 开发调试
+
+| 模块目录 | RouteName | 角色 | 业务说明 | 主要依赖 |
+|----------|-----------|------|----------|----------|
+| `debug_tools/` | `debugTools` | 入口 | 种子导入、Hive 统计、版本信息 | `LocalSeedService`、各 Service |
+
+### 9.8 新增页面 checklist
+
+1. 确定所属**业务域**（shell / focus / plan / notes / profile / debug，或新增域）。
+2. 判断是域**入口**还是**子流程**；子流程优先 `pages/{domain}/{sub_feature}/`。
+3. 在对应域表格补一行，更新 §9.1 总览树。
+4. 注册 `RouteName` + `router.dart`；子流程 RouteName 建议带域前缀（如 `noteFolder` 属 notes 域）。
+
+## 10. 模块组织方式
+
+- 页面模块至少使用 `index.dart + controller.dart + view.dart`。
+- 模块内 **`export` 或 `part / part of` 二选一**，全项目统一，不混用。
+- `index.dart` 负责外部 import 或 part 聚合。
+- 跨页面业务组件放 `components/`；基础 UI 放 `widgets/`。
+
+## 11. 数据层目录
+
+```text
+lib/apis/
+├── {module}.dart          # abstract class XxxAPI，只写真实接口静态方法
+├── helpers.dart           # 响应 data / list / page 解析工具
+└── index.dart
+
+lib/models/
+├── params/                # 请求参数
+├── responses/             # 响应模型
+└── data/                  # 领域模型（或按工程实际 models/ 布局）
+```
+
+`apis/` 是真实接口封装层，不负责 mock / real 开关，不保存 mock 数据。真实接口路径直接写在对应 API 静态方法内。
+
+## 12. 状态与服务层级
+
+```text
+lib/store/
+├── config.dart            # 协议、版本、mock 开关
+├── user.dart              # 登录态、用户资料
+└── index.dart
+
+lib/services/
+├── http.dart              # Dio 与错误转换
+├── storage.dart           # GetStorage + Hive
+├── event.dart             # 全局事件
+├── mock.dart              # mock 成功、失败、空数据、延迟
+└── index.dart
+```
+
+## 13. 结构约束
+
+- 不新增 `core/`、`app/`、`controllers/` 替代既定结构。
+- `widgets/`、`dialog/`、`{sub_feature}/` 只在确实存在对应内容时创建。
+- 子页面、详情页等独立流程必须作为 `{sub_feature}/`，不能写成顶层扁平文件。
+
+## 14. 已确定依赖
+
+| 依赖 | 用途 |
+|------|------|
+| `get` | GetX 状态管理 |
+| `go_router` | 路由 |
+| `dio` | 网络 |
+| `get_storage` | 轻量存储 |
+| `hive` / `hive_flutter` | 结构化本地缓存 |
+| `package_info_plus` | App 信息 |
+| `flutter_screenutil` | 屏幕适配 |
+| `flutter_localizations` | Flutter 本地化 |
+| `intl` | 格式化 |
+
+## 15. 暂不引入
+
+供应商或策略未确认前，不引入：
+
+- 运营商一键登录 SDK
+- 短信 SDK
+- 微信 / 支付宝 / IAP 支付 SDK
+- 视频上传 SDK
+- 视频播放 SDK
+- APM / 崩溃统计 SDK
+
+## 16. 引入新依赖前检查
+
+1. 依赖是否服务当前模块。
+2. 是否已有 Flutter / Dart 标准能力或现有依赖可完成。
+3. 是否涉及隐私、支付、上传、登录等合规风险。
+4. 是否需要同步隐私政策或商店合规清单。
+
+依赖更新后执行：`flutter pub get` → `flutter analyze` → 必要时 `flutter test`。

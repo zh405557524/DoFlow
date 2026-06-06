@@ -1,6 +1,6 @@
-import 'package:doflow/pages/battle_map/index.dart';
-import 'package:doflow/pages/battle_map/widgets/overview_banner.dart';
-import 'package:doflow/pages/battle_map/widgets/track_card.dart';
+import 'package:doflow/pages/plan/battle_map/index.dart';
+import 'package:doflow/pages/plan/battle_map/widgets/overview_banner.dart';
+import 'package:doflow/pages/plan/battle_map/widgets/track_card.dart';
 import 'package:doflow/routes/index.dart';
 import 'package:doflow/widgets/index.dart';
 import 'package:flutter/material.dart';

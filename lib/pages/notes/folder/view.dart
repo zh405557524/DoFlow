@@ -1,6 +1,6 @@
 import 'package:doflow/models/index.dart';
 import 'package:doflow/pages/main/widgets/bottom_nav.dart';
-import 'package:doflow/pages/note_folder/index.dart';
+import 'package:doflow/pages/notes/folder/index.dart';
 import 'package:doflow/pages/notes/widgets/note_create_actions.dart';
 import 'package:doflow/pages/notes/widgets/note_empty_state.dart';
 import 'package:doflow/pages/notes/widgets/note_entry_card.dart';

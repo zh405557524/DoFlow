@@ -1,8 +1,8 @@
 import 'package:doflow/models/index.dart';
-import 'package:doflow/pages/chat/index.dart';
-import 'package:doflow/pages/chat/widgets/chat_input_bar.dart';
-import 'package:doflow/pages/chat/widgets/draft_card.dart';
-import 'package:doflow/pages/chat/widgets/message_bubble.dart';
+import 'package:doflow/pages/chat_home/chat/index.dart';
+import 'package:doflow/pages/chat_home/chat/widgets/chat_input_bar.dart';
+import 'package:doflow/pages/chat_home/chat/widgets/draft_card.dart';
+import 'package:doflow/pages/chat_home/chat/widgets/message_bubble.dart';
 import 'package:doflow/routes/index.dart';
 import 'package:doflow/services/index.dart';
 import 'package:doflow/theme.dart';

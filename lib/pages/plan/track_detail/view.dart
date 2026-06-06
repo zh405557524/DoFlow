@@ -1,6 +1,6 @@
 import 'package:doflow/models/index.dart';
-import 'package:doflow/pages/track_detail/index.dart';
-import 'package:doflow/pages/track_detail/widgets/timeline.dart';
+import 'package:doflow/pages/plan/track_detail/index.dart';
+import 'package:doflow/pages/plan/track_detail/widgets/timeline.dart';
 import 'package:doflow/routes/index.dart';
 import 'package:doflow/theme.dart';
 import 'package:doflow/widgets/index.dart';

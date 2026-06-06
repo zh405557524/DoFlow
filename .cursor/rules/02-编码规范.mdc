@@ -1,0 +1,144 @@
+---
+description: Flutter 编码规范、文案与 Controller 结构
+globs: "lib/**/*.dart,test/**/*.dart,lib/l10n/**"
+alwaysApply: true
+---
+
+# 02-编码规范
+
+## 1. 命名
+
+- 文件和目录：`snake_case`
+- 类和枚举：`PascalCase`
+- 变量和函数：`camelCase`
+- 路由名集中放 `RouteName`
+- 用户可见文案优先集中管理，避免散落在复杂页面里
+
+## 2. 模块组织
+
+- 页面模块使用 `index.dart + controller.dart + view.dart`。
+- 模块内 `export` 或 `part / part of` 二选一，全项目统一，不混用。
+- 一个模块内不要混用 `part` 和本地互相 `import` 两套方式。
+- `index.dart` 负责外部 import 或 part 聚合。
+- `controller.dart` 负责页面状态和业务动作。
+- `view.dart` 负责 UI 结构。
+
+## 3. 状态管理
+
+- 页面状态放页面 Controller。
+- 跨页面状态放 `store/`。
+- 复用动作放 `services/`。
+- API 入口放 `apis/`，API 类使用 `abstract class XxxAPI` + `static` 方法。
+- Controller 禁止使用 `Get.context`。
+
+## 4. 后端待确定约束
+
+- 页面不得写死真实 API path。
+- 真实 API path 写在对应 `apis/` 静态方法内，不再通过集中 endpoint 常量分散维护。
+- `apis/` 只负责真实接口请求和 DTO / 领域模型转换，不判断 mock / real，不保存 mock 数据。
+- `ConfigStore.mockEnabled` 只能由业务 Controller 读取；Controller 决定走私有 mock 方法还是 `XxxAPI.staticMethod()`。
+- mock 数据放在对应业务 Controller 私有方法 / 私有常量中，不放在 `apis/` 和 `HttpService`。
+- 登录、支付、上传、播放、生成任务供应商未确认前只写抽象，不引入真实 SDK。
+
+## 5. 错误处理
+
+- 异步调用必须捕获异常。
+- 用户可见失败必须有 toast、错误态或可重试入口。
+- 表单提交失败必须保留用户已填写内容。
+- 关键动作必须防重复点击。
+
+## 6. 多语言与文案
+
+- 当前默认中文，但工程保留 `l10n/` 和 `generated/` 目录。复杂页面不得把大量用户可见文案散落在 Widget 中。
+- 高频通用文案：集中到常量或后续 l10n。
+- 页面私有短文案：可临时放页面模块，但需要清晰可迁移。
+- 价格、积分、时长、日期：统一走格式化工具。
+- 协议、规则、隐私政策：走 WebView 或配置，不硬编码长文本。
+- 不在多个页面复制同一段长文案；不把运营规则奖励金额写死在 UI。
+
+## 7. 注释
+
+注释是本项目的硬性编码要求。新增或修改 Controller、Service、Store、API、Model、关键业务工具方法时，必须同步补齐 `///` 业务注释；缺少必要注释视为不符合编码规范。
+
+### 7.1 必须写 `///` 的位置
+
+- `apis/` 内每个 API 方法：说明业务用途、候选接口路径、关键参数或返回值。
+- `models/` 内每个 data 类：说明业务含义；**类内每个字段**写明页面或业务语义。
+- **重要方法**：对外暴露、承载主流程或含非显而易见业务规则的方法。
+- **重要成员变量**：类内承载页面状态、业务配置、会话数据、计时/防抖/缓存的字段。
+
+### 7.2 哪些算「重要方法」
+
+| 位置 | 典型方法 |
+|------|----------|
+| `lib/pages/**/controller.dart` | 页面初始化加载、提交/保存、登录登出、支付、上传、删除、跳转入口、mock/real 分支入口 |
+| `lib/services/` | `HttpService` 请求封装、存储读写、平台能力封装、全局事件分发 |
+| `lib/store/` | 登录态变更、会话持久化、跨页面共享状态写入 |
+| `lib/plugins/` | 第三方 SDK 对外暴露的初始化、鉴权、回调处理 |
+| `lib/routes/` | 路由守卫、重定向、登录回跳 |
+| `lib/utils/` | 校验器、格式化、环境/常量解析（影响运行行为的） |
+
+`view.dart` 内私有 UI 构建方法、简单 getter/setter、一眼能看懂的布局拆分，可不写注释。
+
+### 7.3 哪些算「重要成员变量」
+
+| 位置 | 典型字段 |
+|------|----------|
+| `lib/pages/**/controller.dart` | 页面状态（loading/error/submitting）、表单控制器、倒计时、模式开关 |
+| `lib/store/` | token、用户资料、mock 开关、API 地址等全局态 |
+| `lib/services/` | 客户端实例、缓存 key、会话/设备标识 |
+| `models/` | 请求参数、响应 DTO、领域模型字段（**全部字段**） |
+
+### 7.4 注释写什么
+
+- 方法：说明业务目的、触发条件（mock/real、登录态等）、异步副作用（写 Store、toast、导航）。
+- 成员变量：说明含义与取值范围/单位；响应式字段说明何时更新、驱动哪块 UI。
+- 不要写重复代码字面意思的注释。
+- 交付前必须自查本次新增 / 修改的业务字段和方法是否已补注释。
+
+## 8. Controller / UI 依赖边界
+
+- Controller 可以直接接收 `BuildContext` 并调用页面业务需要的权限、系统选择器、弹框、BottomSheet、路由和 Toast。
+- 页面根部可以创建、读取 Controller，并把 Controller 的公开业务方法包装成回调传给子组件。
+- 子 Widget、dialog、sheet、picker 禁止持有 Controller 字段，禁止把 Controller 保存为成员变量，禁止接收 Controller 对象。
+- 子 Widget、dialog、sheet、picker 禁止调用 `Get.find<.*Controller>()`；它们只接收展示值、DTO、`Rx` 状态或回调。
+- Controller 不需要通过 `View` 接口访问 UI 能力；若当前模块没有真实必要，不新增 `XxxView` 接口、`bindView`、`unbindView`。
+
+## 9. 类成员顺序
+
+类内成员按下面顺序排列；没有对应内容的区块可以省略，但已有内容不得随意穿插：
+
+1. 依赖与状态字段：Store、Service、API、`Rx` 状态、页面数据源。
+2. 私有运行态字段：当前任务、缓存、订阅、定时器、幂等键等。
+3. 静态常量与选项数据：`static const`、固定选项列表、默认值。
+4. 构造与初始化：构造函数、初始化参数。
+5. 生命周期：`onInit`、`onReady`、`onClose`、`dispose` 等。
+6. 公开 getter：供页面渲染读取的派生状态。
+7. 公开业务方法：页面事件入口、用户操作入口、业务流程编排。
+8. 私有加载/选择辅助方法：配置加载、默认选择、查找工具。
+9. 私有上传/生成辅助方法：任务创建、上传、轮询、失败处理。
+10. 私有格式化/错误处理辅助方法：文案格式化、异常转换、日志和提示。
+11. 内部类、私有 UI 类、typedef、extension 放在文件最下面。
+
+## 10. 区块划分与同族方法
+
+- 每个区块内部先放字段，再放 getter，再放方法；不要在方法之间插入无关字段。
+- 公有方法放在私有方法上方；同一个业务流程的入口、重试、核心执行方法应相邻。
+- 私有方法按调用链或业务阶段排列。
+- Controller、Store、Service、API、Model 文件里禁止混入页面私有 UI 类。
+- 同名/同族方法必须相邻，例如 `createTask`、`retryTask`、`_createTaskPayload` 不要被无关方法隔开。
+- Getter 和对应的写方法或选择方法保持邻近。
+
+## 11. 验证
+
+每轮编码完成至少运行：
+
+```bash
+flutter analyze
+```
+
+涉及链路或测试已存在时运行：
+
+```bash
+flutter test
+```

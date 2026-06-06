@@ -1,4 +1,4 @@
-import 'package:doflow/pages/note_file/index.dart';
+import 'package:doflow/pages/notes/file/index.dart';
 import 'package:doflow/pages/notes/widgets/note_empty_state.dart';
 import 'package:doflow/theme.dart';
 import 'package:doflow/widgets/index.dart';

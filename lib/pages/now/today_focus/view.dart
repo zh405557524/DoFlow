@@ -1,5 +1,5 @@
 import 'package:doflow/models/index.dart';
-import 'package:doflow/pages/today_focus/index.dart';
+import 'package:doflow/pages/now/today_focus/index.dart';
 import 'package:doflow/routes/index.dart';
 import 'package:doflow/theme.dart';
 import 'package:doflow/widgets/index.dart';

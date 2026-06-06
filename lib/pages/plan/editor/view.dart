@@ -1,8 +1,8 @@
 import 'package:doflow/models/index.dart';
-import 'package:doflow/pages/plan_editor/dialog/task_editor_dialog.dart';
-import 'package:doflow/pages/plan_editor/index.dart';
-import 'package:doflow/pages/plan_editor/widgets/basic_info_section.dart';
-import 'package:doflow/pages/plan_editor/widgets/phase_section.dart';
+import 'package:doflow/pages/plan/editor/dialog/task_editor_dialog.dart';
+import 'package:doflow/pages/plan/editor/index.dart';
+import 'package:doflow/pages/plan/editor/widgets/basic_info_section.dart';
+import 'package:doflow/pages/plan/editor/widgets/phase_section.dart';
 import 'package:doflow/theme.dart';
 import 'package:doflow/widgets/index.dart';
 import 'package:flutter/material.dart';

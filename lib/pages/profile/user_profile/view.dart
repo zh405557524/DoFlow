@@ -1,4 +1,4 @@
-import 'package:doflow/pages/user_profile/index.dart';
+import 'package:doflow/pages/profile/user_profile/index.dart';
 import 'package:doflow/routes/index.dart';
 import 'package:doflow/store/index.dart';
 import 'package:doflow/theme.dart';
